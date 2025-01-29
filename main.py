@@ -3,6 +3,8 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 
+from initial_data import WordEquationReplacer
+
 
 class App:
     def __init__(self, root):
@@ -143,6 +145,8 @@ class App:
         p = 2
         """Длинна шпалы, м:"""
         lш = 2.7
+        """Вес воды:"""
+        p_vodi = 1
         ## ВВодимс
         self.H = data["Высота насыпи Н, м"]
         self.n = data["Показатель крутизны откосов n, -"]
@@ -173,13 +177,13 @@ class App:
         self.N = self.find_max_N()
         self.b1 = self.n * self.H / self.N
 
-        self.xn1 = App.b0
+        self.xn1 = b0
         self.xn2 = self.xn1 + self.b1
         self.xn3 = self.xn2 + self.b1
         self.xn4 = self.xn3 + self.b1
         self.xn5 = self.xn4 + self.b1
 
-        self.xcp0 = App.b0/2
+        self.xcp0 = b0/2
         self.xcp1 = (self.xcp0 + self.xn2)/2
         self.xcp2 = (self.xcp1 + self.xn3)/2
         self.xcp3 = (self.xcp2 + self.xn4)/2
@@ -215,16 +219,62 @@ class App:
         self.g3 = 2* self.h3 * self.b1
         self.g4 = 2* self.h4 * self.b1
 
-        self.Cpr = input(f"Введите значение Спр для WL = {self.WL} и h = {self.h0}")
-        self.Cpr = input(f"Введите значение Спр для WL = {self.WL} и h = {self.h1}")
-        self.Cpr = input(f"Введите значение Спр для WL = {self.WL} и h = {self.h2}")
-        self.Cpr = input(f"Введите значение Спр для WL = {self.WL} и h = {self.h3}")
-        self.Cpr = input(f"Введите значение Спр для WL = {self.WL} и h = {self.h4}")
+        #self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h0}"))
+        #self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h1}"))
+        #self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h2}"))
+        #self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h3}"))
+        #self.Cpr4 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h4}"))
+        #self.φ = math.radians(float(input(f"Введите значение φ =")))
+
+        self.Cpr0 = 1.05
+        self.Cpr1 = 1.21
+        self.Cpr2 = 1.26
+        self.Cpr3 = 1.19
+        self.Cpr4 = 1.01
+        self.φ = math.degrees(16)
+        self.f = math.tan(self.φ -2)
+        self.Tydc0 = self.Cpr0 * b0 / math.cos(self.β0)
+        self.Tydc1 = self.Cpr1 * self.b1 / math.cos(self.β1)
+        self.Tydc2 = self.Cpr2 * self.b1 / math.cos(self.β2)
+        self.Tydc3 = self.Cpr3 * self.b1 / math.cos(self.β3)
+        self.Tydc4 = self.Cpr4 * self.b1 / math.cos(self.β4)
+        self.ΣTydc = self.Tydc0 + self.Tydc1 + self.Tydc2 + self.Tydc3 + self.Tydc4
+        self.Tydf0 = self.f * self.g0 * math.cos(self.β0)
+        self.Tydf1 = self.f * self.g1 * math.cos(self.β1)
+        self.Tydf2 = self.f * self.g2 * math.cos(self.β2)
+        self.Tydf3 = self.f * self.g3 * math.cos(self.β3)
+        self.Tydf4 = self.f * self.g4 * math.cos(self.β4)
+        self.ΣTydf = self.Tydf0 + self.Tydf1 + self.Tydf2 + self.Tydf3 + self.Tydf4
+        self.Tcd0 = self.g0 * math.sin(self.β0)
+        self.Tcd1 = self.g1 * math.sin(self.β1)
+        self.Tcd2 = self.g2 * math.sin(self.β2)
+        self.Tcd3 = self.g3 * math.sin(self.β3)
+        self.Tcd4 = self.g4 * math.sin(self.β4)
+        self.ΣTcd = self.Tcd0 + self.Tcd1 + self.Tcd2 + self.Tcd3 + self.Tcd4
+
+        self.Km = (self.ΣTydc + self.ΣTydf)/(self.ΣTcd + (p_vodi*(max(self.h0, self.h1, self.h2, self.h3, self.h4))**2)/2)
 
         print(f'horda={self.horda_2d}\nd={self.d}\nt={self.t}\nR={self.R}\nα={self.α}\nμ={self.μ}\nXR={self.XR}\n'
-              f'XY={self.YR}\nN={self.N}\nb={self.b}\nfind_max_N={self.find_max_N}')
+              f'XY={self.YR}\nN={self.N}\nb={self.b1}\nfind_max_N={self.find_max_N}\nxn1={self.xn1}\nxn2={self.xn2}\n'
+              f'xn3={self.xn3}\nxn4={self.xn4}\nxn5={self.xn5}\nxcp0={self.xcp0}\nxcp1={self.xcp1}\nxcp2={self.xcp2}'
+              f'\nxcp3={self.xcp3}\nxcp4={self.xcp4}\nβ0={self.β0}\nβ1={self.β1}\nβ2={self.β2}\nβ3={self.β3}'
+              f'\nβ4={self.β4}\nyп1={self.yп1}\nyп2={self.yп2}\nyп3={self.yп3}\nyп4={self.yп4}\nyп5={self.yп5}\n'
+              f'yk0={self.yk0}\nyk1={self.yk1}\nyk2={self.yk2}\nyk3={self.yk3}\nyk4={self.yk4}\nh0={self.h0}'
+              f'h1={self.h1}\nh2={self.h2}\nh3={self.h3}\nh4={self.h4}\ng0={self.g0}\ng1={self.g1}\ng2={self.g2}\n'
+              f'g3={self.g3}\ng4={self.g4}\nCpr0={self.Cpr0}\nCpr1={self.Cpr1}\nCpr2={self.Cpr2}\nCpr3={self.Cpr3}\n'
+              f'Cpr4={self.Cpr4}\nφ={self.φ}\nf={self.f}\nTydc0={self.Tydc0}\nTydc1={self.Tydc1}\nTydc2={self.Tydc2}\n'
+              f'Tydc3={self.Tydc3}\nTydc4={self.Tydc4}\nΣTydc={self.ΣTydc}\nTydf0={self.Tydf0}\nTydf1={self.Tydf1}\n'
+              f'Tydf2={self.Tydf2}\nTydf3={self.Tydf3}\nTydf4={self.Tydf4}\nΣTydf={self.ΣTydf}\nTcd0={self.Tcd0}\n'
+              f'Tcd1={self.Tcd1}\nTcd2={self.Tcd2}\nTcd3={self.Tcd3}\nTcd4={self.Tcd4}\nΣTcd={self.ΣTcd}\n'
+              f'Km={self.Km}')
 
+        # Создание экземпляра WordEquationReplacer
+        replacer = WordEquationReplacer('templateWord.docx', dd=f'{self.d}', ddd=f'{self.d**2}', HH=f'{self.H}',
+                                        nn=f"{self.n}", hbm=f'{self.hбм}',)
 
+        # Обработка документа
+        replacer.process_document()
+        replacer.save_document('templateWord1.docx')
 
     def find_max_N(self):
         """
