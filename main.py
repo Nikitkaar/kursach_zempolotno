@@ -168,10 +168,12 @@ class App:
         self.R = (self.d**2 + self.t**2)/(2*self.t)
         self.α = math.asin((self.H - self.hбм) / self.horda_2d)
 
-        #self.α_degrees = math.degrees(self.α)
+        self.α_degrees = math.degrees(self.α)
         #print(f"Угол в радианах: {self.α_degrees}")
 
         self.μ = math.asin(self.d/self.R)
+        self.μ_degrees = math.degrees(self.μ)
+
         self.XR = self.n * self.H + x1 + self.R * math.sin(self.α-self.μ)
         self.YR = self.R * math.cos(self.α-self.μ)
         self.N = self.find_max_N()
@@ -269,8 +271,35 @@ class App:
               f'Km={self.Km}')
 
         # Создание экземпляра WordEquationReplacer
-        replacer = WordEquationReplacer('templateWord.docx', dd=f'{self.d}', ddd=f'{self.d**2}', HH=f'{self.H}',
-                                        nn=f"{self.n}", hbm=f'{self.hбм}',)
+        replacer = WordEquationReplacer('templateWord.docx', dd=f'{self.d}', d2=f'{self.d**2}', HH=f'{self.H}',
+                                        nn=f"{self.n}", hbm=f'{self.hбм}', wl=f'{self.WL}', kt =f'{self.Kt}', x1=x1,
+                                        tt=f'{self.t}', αα=f'{self.α_degrees}', RR=f'{self.R}', μμ=f'{self.μ_degrees}',
+                                        XR=f'{self.XR}', YR=f'{self.YR}', NN=f'{self.N}', b1=f'{self.b1}',
+                                        xn1=f'{self.xn1}', xn2=f'{self.xn2}', xn3=f'{self.xn3}', xn4=f'{self.xn4}',
+                                        xcp0=f'{self.xcp0}', xcp1=f'{self.xcp1}', xcp2=f'{self.xcp2}',
+                                        xcp3=f'{self.xcp3}', xcp4=f'{self.xcp4}',
+
+                                        β1={self.β1},
+                                        β2=f'{self.β2}',
+                                        β3=f'{self.β3}',
+                                        β4=f'{self.β4}',
+                                        β0=f'{self.β0}',
+
+                                        yп1=f'{self.yп1}',
+                                        y2=f'{self.yп2}',
+                                        y3=f'{self.yп3}',
+                                        y4=f'{self.yп4}',
+                                        y5=f'{self.yп5}',
+
+                                        yk0 =f'{self.yk0}',
+                                        yk1=f'{self.yk1}',
+                                        yk2=f'{self.yk2}',
+                                        yk3=f'{self.yk3}',
+                                        yk4=f'{self.yk4}',
+
+                                        ρρ=f'{p_vodi}',
+                                        hhmax2=f'{(max(self.h0, self.h1, self.h2, self.h3, self.h4)**2)}'
+                                        )
 
         # Обработка документа
         replacer.process_document()
