@@ -1,48 +1,59 @@
+import logging
+import re
 from docx import Document
-from docx.oxml import OxmlElement
 
 class WordEquationReplacer:
     def __init__(self, file_path, **kwargs):
         self.doc = Document(file_path)
         self.replacements = kwargs
+        logging.debug(f"Инициализация WordEquationReplacer: {self.replacements}")
+
+    import re
 
     def replace_text_in_paragraph(self, p):
+        """Заменяет текст в переданном параграфе и логирует процесс."""
         for old, new in self.replacements.items():
-            if old in p.text:
+            # Экранируем текст, чтобы избежать ошибок с регулярными выражениями
+            sanitized_old = re.escape(old)
+
+            # Используем re.sub для замены, просто указываем возможные разделители
+            # Здесь мы обрабатываем возможные пробелы, запятые и точки
+            pattern = re.compile(rf'\b{sanitized_old}\b')  # Слово должно быть целым, используем границы слова
+
+            # Обработаем текст в параграфе
+            if pattern.search(p.text):
                 for run in p.runs:
-                    if old in run.text:
-                        run.text = run.text.replace(old, new)
+                    if pattern.search(run.text):
+                        old_text = run.text
+                        run.text = pattern.sub(new, run.text)
+                        logging.debug(f"Заменено в параграфе: '{old}' на '{new}' в тексте '{old_text}'")
+            else:
+                logging.debug(f"'{old}' не найдено в тексте: '{p.text}'")
+
+    def replace_text_in_cell(self, cell):
+        """Заменяет текст в переданной ячейке."""
+        for paragraph in cell.paragraphs:
+            self.replace_text_in_paragraph(paragraph)
 
     def process_document(self):
-        # Проходим по всем параграфам
+        """Обрабатывает документ, заменяя текст и обрабатывая таблицы."""
+        logging.info("Обработка документа начата.")
+
+        # Заменяем текст в параграфах
         for p in self.doc.paragraphs:
+            logging.debug(f"Обрабатываем параграф: '{p.text}'")
             self.replace_text_in_paragraph(p)
 
-        # Проходим по всем таблицам
+        # Заменяем текст в таблицах
         for table in self.doc.tables:
             for row in table.rows:
                 for cell in row.cells:
-                    self.replace_text_in_paragraph(cell)
+                    logging.debug(f"Обрабатываем ячейку: '{cell.text}'")
+                    self.replace_text_in_cell(cell)
 
-                    # Проверка на окончание строки на *
-                    if cell.text.endswith('*'):
-                        # Пример уравнения с заменёнными значениями
-                        equation = f'2{self.replacements.get("dd", "d")}=√(({self.replacements.get("HH", "HH")}-hbm)^2+(nn*{self.replacements.get("HH", "HH")}+b0)^2)'
-
-                        # Заменяем ячейку на новое уравнение
-                        cell.clear()
-
-                        # Добавляем элемент уравнения в формате Word XML
-                        math_element = OxmlElement('m:oMath')
-                        math_element.append(OxmlElement('m:r').append(OxmlElement('m:t', text=equation)))
-
-                        cell._element.append(math_element)
+        logging.info("Обработка документа завершена.")
 
     def save_document(self, new_file_path):
+        """Сохраняет документ в новый файл."""
         self.doc.save(new_file_path)
-
-# Пример использования класса
-if __name__ == "__main__":
-    replacer = WordEquationReplacer('templateWord.docx', dd='7', HH='11.8', nn="6.1")
-    replacer.process_document()
-    replacer.save_document('templateWord1.docx')
+        logging.info(f"Документ сохранен как: {new_file_path}")
