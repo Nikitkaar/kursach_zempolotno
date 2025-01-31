@@ -8,7 +8,6 @@ def create_angled_dimension_dxf(output_dxf_filename="angled_dimension.dxf"):
     doc = ezdxf.new("R2010")  # Создаем новый документ DXF (R2010 формат)
     msp = doc.modelspace()  # Получаем доступ к пространству модели
 
-
     # Определяем точки для линий и углового размера
     point1 = Vec3(0, 0)
     point2 = Vec3(10, 0)
@@ -21,18 +20,16 @@ def create_angled_dimension_dxf(output_dxf_filename="angled_dimension.dxf"):
     # Вычисляем точку для размещения текста углового размера. Эта точка должна находится примерно по центру дуги размера
     text_point = point2.lerp(point3, 0.2).lerp(point1,0.2) # Смещаем от точки 2 к точке 3 на 20% и от точки 2 к точке 1 на 20%
 
-    # Создаем угловой размер
-    dim = msp.add_angular_dim(
-        base=point2,  # Начальная точка дуги
-        p1=point1,  # Первая точка определяющая угол
-        p2=point3,  # Вторая точка, определяющая угол
+    # Создаем угловой размер с использованием add_angular_dim_2l
+    dim = msp.add_angular_dim_2l(
+        line1,  # Первая линия
+        line2,  # Вторая линия
         location=text_point, # Точка, где будет расположен текст
         dimstyle="ISO-25",
     )
 
     # Обновляем блок размера для корректного отображения (по умолчанию он может быть пустым)
     dim.render()
-
 
     doc.saveas(output_dxf_filename) # Сохраняем DXF-файл
     print(f"DXF-файл '{output_dxf_filename}' создан.")

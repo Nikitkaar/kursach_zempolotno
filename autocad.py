@@ -13,6 +13,32 @@ class AutoCADLines:
         self.b0 = kwargs.get('b0', 2.2) * 1000
         self.n = kwargs.get('n', 2.1) * 1000
         self.segments = []  # Хранение всех отрезков для проверки
+        self.h0 = kwargs.get('h0', 1.98) * 1000
+        self.h1 = kwargs.get('h1', 3.05) * 1000
+        self.h2 = kwargs.get('h2', 3.18) * 1000
+        self.h3 = kwargs.get('h3', 2.73) * 1000
+        self.h4 = kwargs.get('h4', 1.75) * 1000
+        self.h5 = kwargs.get('h5', 0.3) * 1000
+
+        self.xn2 = kwargs.get('xn2', 7.16) * 1000
+        self.xn3 = kwargs.get('xn3', 12.12) * 1000
+        self.xn4 = kwargs.get('xn4', 17.08) * 1000
+        self.xn5 = kwargs.get('xn5', 22.04) * 1000
+        self.xn6 = kwargs.get('xn6', 27.0) * 1000
+
+        self.xcp0 = kwargs.get('xcp0', 1.1) * 1000
+        self.xcp1 = kwargs.get('xcp1', 4.68) * 1000
+        self.xcp2 = kwargs.get('xcp2', 9.64) * 1000
+        self.xcp3 = kwargs.get('xcp3', 14.6) * 1000
+        self.xcp4 = kwargs.get('xcp4', 19.56) * 1000
+        self.xcp5 = kwargs.get('xcp5', 24.52) * 1000
+
+        self.yп1 = kwargs.get('yп1', 11.8) * 1000
+        self.yп2 = kwargs.get('yп2', 10.56) * 1000
+        self.yп3 = kwargs.get('yп3', 8.08) * 1000
+        self.yп4 = kwargs.get('yп4', 5.6) * 1000
+        self.yп5 = kwargs.get('yп5', 3.12) * 1000
+        self.yп6 = kwargs.get('yп6', 0.64) * 1000
 
     def draw_lines(self):
         x_max = max(self.xnmax, 0) / self.scale_factor  # Применяем масштаб
@@ -25,6 +51,8 @@ class AutoCADLines:
         hordaend = hbmstart = Hbmend = APoint(x_max, (self.H - self.hbm) / self.scale_factor)
         hbmend = b0startUP = APoint(x_max, self.H / self.scale_factor)
         otkostart = b0endUP = APoint(x_max - self.b0 / self.scale_factor, self.H / self.scale_factor)
+        h0end = APoint(x_max - self.xcp0 / self.scale_factor, (self.H - self.h0) / self.scale_factor)
+        h0start = APoint(x_max-self.xcp0 / self.scale_factor, self.H / self.scale_factor)
 
         # Создание отрезков
         self.add_segment(vertical_start, vertical_end)
@@ -45,6 +73,7 @@ class AutoCADLines:
 
         # Добавляем мешающий отрезок
         self.add_segment(hordastart, hordaend)
+        self.add_segment(h0start, h0end)
 
         # Добавление размеров
         self._add_dimensions(Hbmstart, Hbmend, f'H = {(self.H - self.hbm) / 1000:.2f} м', offset_x=10)
@@ -91,7 +120,7 @@ class AutoCADLines:
 
         # Добавление текста в середине отрезка
         mt = self.acad.model.AddText(text, mid_point, 4)  # Устанавливаем размер текста равным 4
-        mt.Rotation = 0.4363325  # Установка угла наклона текста
+        mt.Rotation = math.radians(25)  # 0.4363325 Установка угла наклона текста
 
     def _create_arrow(self, end, orientation):
         if orientation == 'vertical':

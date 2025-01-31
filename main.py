@@ -174,95 +174,95 @@ class App:
         self.b1 = round(self.n * self.H / self.N, 2)
 
         self.xn1 = b0
-        self.xn2 = round(self.xn1 + self.b1, 1)
-        self.xn3 = round(self.xn2 + self.b1, 1)
-        self.xn4 = round(self.xn3 + self.b1, 1)
-        self.xn5 = round(self.xn4 + self.b1, 1)
-        self.xn6 = round(self.xn5 + self.b1, 1)
+        self.xn2 = self.xn1 + self.b1
+        self.xn3 = self.xn2 + self.b1
+        self.xn4 = self.xn3 + self.b1
+        self.xn5 = self.xn4 + self.b1
+        self.xn6 = self.xn5 + self.b1
 
 
-        self.xcp0 = round(b0 / 2, 1)
-        self.xcp1 = round((self.xcp0 + self.xn2) / 2, 1)
-        self.xcp2 = round((self.xcp1 + self.xn3) / 2, 1)
-        self.xcp3 = round((self.xcp2 + self.xn4) / 2, 1)
-        self.xcp4 = round((self.xcp3 + self.xn5) / 2, 1)
-        self.xcp5 = round((self.xcp4 + self.xn6) / 2, 1)
+        self.xcp0 = b0 / 2
+        self.xcp1 = (self.xn2+ self.xn1) / 2
+        self.xcp2 = (self.xn3+ self.xn2) / 2
+        self.xcp3 = (self.xn4+ self.xn3) / 2
+        self.xcp4 = (self.xn5+ self.xn4) / 2
+        self.xcp5 = (self.xn6 + self.xn5) / 2
 
-        self.β0 = round(math.asin((self.XR - self.xcp0) / self.R),2)
-        self.β1 = round(math.asin((self.XR - self.xcp1) / self.R),2)
-        self.β2 = round(math.asin((self.XR - self.xcp2) / self.R),2)
-        self.β3 = round(math.asin((self.XR - self.xcp3) / self.R),2)
-        self.β4 = round(math.asin((self.XR - self.xcp4) / self.R), 2)
-        self.β5 = round(math.asin((self.XR - self.xcp5) / self.R), 2)
+        self.β0 = math.asin((self.XR - self.xcp0) / self.R)
+        self.β1 = math.asin((self.XR - self.xcp1) / self.R)
+        self.β2 = math.asin((self.XR - self.xcp2) / self.R)
+        self.β3 = math.asin((self.XR - self.xcp3) / self.R)
+        self.β4 = math.asin((self.XR - self.xcp4) / self.R)
+        self.β5 = math.asin((self.XR - self.xcp5) / self.R)
 
-        self.yп1 = round(self.H - (self.xcp0 - x1) / 2, 2)
-        self.yп2 = round(self.H - (self.xcp1 - x1) / 2, 2)
-        self.yп3 = round(self.H - (self.xcp2 - x1) / 2, 2)
-        self.yп4 = round(self.H - (self.xcp3 - x1) / 2, 2)
-        self.yп5 = round(self.H - (self.xcp4 - x1) / 2, 2)
-        self.yп6 = round(self.H - (self.xcp5 - x1) / 2, 2)
+        self.yп1 = self.H
+        self.yп2 = self.H - (self.xcp1 - x1) / 2
+        self.yп3 = self.H - (self.xcp2 - x1) / 2
+        self.yп4 = self.H - (self.xcp3 - x1) / 2
+        self.yп5 = self.H - (self.xcp4 - x1) / 2
+        self.yп6 = self.H - (self.xcp5 - x1) / 2
 
-        self.yk0 = round(self.YR - self.R * math.cos(self.β0), 2)
-        self.yk1 = round(self.YR - self.R * math.cos(self.β1), 2)
-        self.yk2 = round(self.YR - self.R * math.cos(self.β2), 2)
-        self.yk3 = round(self.YR - self.R * math.cos(self.β3), 2)
-        self.yk4 = round(self.YR - self.R * math.cos(self.β4), 2)
-        self.yk5 = round(self.YR - self.R * math.cos(self.β5), 2)
+        self.yk0 = self.YR - self.R * math.cos(self.β0)
+        self.yk1 = self.YR - self.R * math.cos(self.β1)
+        self.yk2 = self.YR - self.R * math.cos(self.β2)
+        self.yk3 = self.YR - self.R * math.cos(self.β3)
+        self.yk4 = self.YR - self.R * math.cos(self.β4)
+        self.yk5 = self.YR - self.R * math.cos(self.β5)
 
-        self.h0 = round(self.yп1 - self.yk0, 2)
-        self.h1 = round(self.yп2 - self.yk1, 2)
-        self.h2 = round(self.yп3 - self.yk2, 2)
-        self.h3 = round(self.yп4 - self.yk3, 2)
-        self.h4 = round(self.yп5 - self.yk4, 2)
-        self.h5 = round(self.yп6 - self.yk5, 2)
+        self.h0 = self.yп1 - self.yk0
+        self.h1 = self.yп2 - self.yk1
+        self.h2 = self.yп3 - self.yk2
+        self.h3 = self.yп4 - self.yk3
+        self.h4 = self.yп5 - self.yk4
+        self.h5 = self.yп6 - self.yk5
 
-        self.g0 = round(2 * self.h0 * b0, 2)
-        self.g1 = round(2 * self.h1 * self.b1, 2)
-        self.g2 = round(2 * self.h2 * self.b1, 2)
-        self.g3 = round(2 * self.h3 * self.b1, 2)
-        self.g4 = round(2 * self.h4 * self.b1, 2)
-        self.g5 = round(2 * self.h5 * self.b1, 2)
+        self.g0 = 2 * self.h0 * b0
+        self.g1 = 2 * self.h1 * self.b1
+        self.g2 = 2 * self.h2 * self.b1
+        self.g3 = 2 * self.h3 * self.b1
+        self.g4 = 2 * self.h4 * self.b1
+        self.g5 = 2 * self.h5 * self.b1
 
-        self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h0}"))
-        self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h1}"))
-        self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h2}"))
-        self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h3}"))
-        self.Cpr4 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h4}"))
-        self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h = {self.h5}"))
-        self.φ = math.radians(float(input(f"Введите значение φ =")))
+        #self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h0 = {self.h0}"))
+        #self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h1 = {self.h1}"))
+        #self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h2 = {self.h2}"))
+        #self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h3 = {self.h3}"))
+        #self.Cpr4 = float(input(f"Введите значение Спр для WL = {self.WL} и h4 = {self.h4}"))
+        #self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h5 = {self.h5}"))
+        #self.φ = (float(input(f"Введите значение φ =")))
 
-        #self.Cpr0 = 1.05
-        #self.Cpr1 = 1.21
-        #self.Cpr2 = 1.26
-        #self.Cpr3 = 1.19
-        #self.Cpr4 = 1.01
-        #self.Cpr5 =
-        #self.φ = round(math.degrees(15.5),2)
-        self.f = round(math.tan(self.φ - 2),2)
-        self.Tydc0 = round(self.Cpr0 * b0 / math.cos(self.β0), 2)
-        self.Tydc1 = round(self.Cpr1 * self.b1 / math.cos(self.β1), 2)
-        self.Tydc2 = round(self.Cpr2 * self.b1 / math.cos(self.β2), 2)
-        self.Tydc3 = round(self.Cpr3 * self.b1 / math.cos(self.β3), 2)
-        self.Tydc4 = round(self.Cpr4 * self.b1 / math.cos(self.β4), 2)
-        self.Tydc5 = round(self.Cpr5 * self.b1 / math.cos(self.β5), 2)
-        self.ΣTydc = round(self.Tydc0 + self.Tydc1 + self.Tydc2 + self.Tydc3 + self.Tydc4 + self.Tydc5, 2)
-        self.Tydf0 = round(self.f * self.g0 * math.cos(self.β0), 2)
-        self.Tydf1 = round(self.f * self.g1 * math.cos(self.β1), 2)
-        self.Tydf2 = round(self.f * self.g2 * math.cos(self.β2), 2)
-        self.Tydf3 = round(self.f * self.g3 * math.cos(self.β3), 2)
-        self.Tydf4 = round(self.f * self.g4 * math.cos(self.β4), 2)
-        self.Tydf5 = round(self.f * self.g5 * math.cos(self.β5), 2)
-        self.ΣTydf = round(self.Tydf0 + self.Tydf1 + self.Tydf2 + self.Tydf3 + self.Tydf4 + self.Tydf5,2)
-        self.Tcd0 = round(self.g0 * math.sin(self.β0), 2)
-        self.Tcd1 = round(self.g1 * math.sin(self.β1), 2)
-        self.Tcd2 = round(self.g2 * math.sin(self.β2), 2)
-        self.Tcd3 = round(self.g3 * math.sin(self.β3), 2)
-        self.Tcd4 = round(self.g4 * math.sin(self.β4), 2)
-        self.Tcd5 = round(self.g5 * math.sin(self.β5), 2)
-        self.ΣTcd = round(self.Tcd0 + self.Tcd1 + self.Tcd2 + self.Tcd3 + self.Tcd4+ + self.Tcd5, 2)
+        self.Cpr0 = 0.90
+        self.Cpr1 = 1.22
+        self.Cpr2 = 1.24
+        self.Cpr3 = 1.13
+        self.Cpr4 = 0.83
+        self.Cpr5 = 0.29
+        self.φ = 16
+        self.f = math.tan(math.radians(self.φ - 2))
+        self.Tydc0 = self.Cpr0 * b0 / math.cos(self.β0)
+        self.Tydc1 = self.Cpr1 * self.b1 / math.cos(self.β1)
+        self.Tydc2 = self.Cpr2 * self.b1 / math.cos(self.β2)
+        self.Tydc3 = self.Cpr3 * self.b1 / math.cos(self.β3)
+        self.Tydc4 = self.Cpr4 * self.b1 / math.cos(self.β4)
+        self.Tydc5 = self.Cpr5 * self.b1 / math.cos(self.β5)
+        self.ΣTydc = self.Tydc0 + self.Tydc1 + self.Tydc2 + self.Tydc3 + self.Tydc4 + self.Tydc5
+        self.Tydf0 = self.f * self.g0 * math.cos(self.β0)
+        self.Tydf1 = self.f * self.g1 * math.cos(self.β1)
+        self.Tydf2 = self.f * self.g2 * math.cos(self.β2)
+        self.Tydf3 = self.f * self.g3 * math.cos(self.β3)
+        self.Tydf4 = self.f * self.g4 * math.cos(self.β4)
+        self.Tydf5 = self.f * self.g5 * math.cos(self.β5)
+        self.ΣTydf = self.Tydf0 + self.Tydf1 + self.Tydf2 + self.Tydf3 + self.Tydf4 + self.Tydf5
+        self.Tcd0 = self.g0 * math.sin(self.β0)
+        self.Tcd1 = self.g1 * math.sin(self.β1)
+        self.Tcd2 = self.g2 * math.sin(self.β2)
+        self.Tcd3 = self.g3 * math.sin(self.β3)
+        self.Tcd4 = self.g4 * math.sin(self.β4)
+        self.Tcd5 = self.g5 * math.sin(self.β5)
+        self.ΣTcd = self.Tcd0 + self.Tcd1 + self.Tcd2 + self.Tcd3 + self.Tcd4+ + self.Tcd5
 
-        self.Km = round((self.ΣTydc + self.ΣTydf) / (
-                    self.ΣTcd + (p_vodi * (max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5)) ** 2) / 2), 3)
+        self.Km = (self.ΣTydc + self.ΣTydf) / (
+                    self.ΣTcd + (p_vodi * (max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5)) ** 2) / 2)
 
 
 
@@ -351,36 +351,36 @@ class App:
 
         # Создание экземпляра WordEquationReplacer
         replacer = WordEquationReplacer('templateWord.docx',
-                                        horda=f'{self.horda_2d}',
-                                        dd=f'{self.d}',
-                                        dsqrt=f'{self.dsqrt}',
-                                        HH=f'{self.H}',
-                                        nn=f"{self.n}",
-                                        hbm=f'{self.hбм}',
-                                        wl=f'{self.WL}',
-                                        kt=f'{self.Kt}',
+                                        horda=f'{round(self.horda_2d,2)}',
+                                        dd=f'{round(self.d,2)}',
+                                        dsqrt=f'{round(self.dsqrt,2)}',
+                                        HH=f'{round(self.H,2)}',
+                                        nn=f"{round(self.n,2)}",
+                                        hbm=f'{round(self.hбм,2)}',
+                                        wl=f'{round(self.WL,2)}',
+                                        kt=f'{round(self.Kt,2)}',
                                         b0=f'{b0}',  # Нужно убедиться, что это определено
-                                        tt=f'{self.t}',
+                                        tt=f'{round(self.t,2)}',
                                         tsqrt=f'{round(self.t**2,2)}',
-                                        αα=f'{self.α_degrees}',  # Преобразование в градусы
-                                        RR=f'{self.R}',
-                                        μμ=f'{self.μ_degrees}',
-                                        XR=f'{self.XR}',
-                                        YR=f'{self.YR}',
+                                        αα=f'{round(self.α_degrees,3)}',  # Преобразование в градусы
+                                        RR=f'{round(self.R,2)}',
+                                        μμ=f'{round(self.μ_degrees,3)}',
+                                        XR=f'{round(self.XR,2)}',
+                                        YR=f'{round(self.YR,2)}',
                                         NN=f'{self.N}',
-                                        b1=f'{self.b1}',
-                                        xn1=f'{self.xn1}',
-                                        xn2=f'{self.xn2}',
-                                        xn3=f'{self.xn3}',
-                                        xn4=f'{self.xn4}',
-                                        xn5=f'{self.xn5}',
-                                        xn6=f'{self.xn6}',
-                                        xcp0=f'{self.xcp0}',
-                                        xcp1=f'{self.xcp1}',
-                                        xcp2=f'{self.xcp2}',
-                                        xcp3=f'{self.xcp3}',
-                                        xcp4=f'{self.xcp4}',
-                                        xcp5=f'{self.xcp5}',
+                                        b1=f'{round(self.b1,2)}',
+                                        xn1=f'{round(self.xn1,2)}',
+                                        xn2=f'{round(self.xn2,2)}',
+                                        xn3=f'{round(self.xn3,2)}',
+                                        xn4=f'{round(self.xn4,2)}',
+                                        xn5=f'{round(self.xn5,2)}',
+                                        xn6=f'{round(self.xn6,2)}',
+                                        xcp0=f'{round(self.xcp0,2)}',
+                                        xcp1=f'{round(self.xcp1,2)}',
+                                        xcp2=f'{round(self.xcp2,2)}',
+                                        xcp3=f'{round(self.xcp3,2)}',
+                                        xcp4=f'{round(self.xcp4,2)}',
+                                        xcp5=f'{round(self.xcp5,2)}',
 
                                         β0=f'{round(math.degrees(self.β0),2)}',
                                         β1=f'{round(math.degrees(self.β1),2)}',
@@ -389,71 +389,69 @@ class App:
                                         β4=f'{round(math.degrees(self.β4),2)}',
                                         β5=f'{round(math.degrees(self.β5),2)}',
 
-                                        yп1=f'{self.yп1}',
-                                        yп2=f'{self.yп2}',
-                                        yп3=f'{self.yп3}',
-                                        yп4=f'{self.yп4}',
-                                        yп5=f'{self.yп5}',
-                                        yп6=f'{self.yп6}',
+                                        yп1=f'{round(self.yп1,2)}',
+                                        yп2=f'{round(self.yп2,2)}',
+                                        yп3=f'{round(self.yп3,2)}',
+                                        yп4=f'{round(self.yп4,2)}',
+                                        yп5=f'{round(self.yп5,2)}',
+                                        yп6=f'{round(self.yп6,2)}',
 
-                                        yk0=f'{self.yk0}',
-                                        yk1=f'{self.yk1}',
-                                        yk2=f'{self.yk2}',
-                                        yk3=f'{self.yk3}',
-                                        yk4=f'{self.yk4}',
-                                        yk5=f'{self.yk5}',
+                                        yk0=f'{round(self.yk0,2)}',
+                                        yk1=f'{round(self.yk1,2)}',
+                                        yk2=f'{round(self.yk2,2)}',
+                                        yk3=f'{round(self.yk3,2)}',
+                                        yk4=f'{round(self.yk4,2)}',
+                                        yk5=f'{round(self.yk5,2)}',
 
-                                        h0=f'{self.h0}',
-                                        h1=f'{self.h1}',
-                                        h2=f'{self.h2}',
-                                        h3=f'{self.h3}',
-                                        h4=f'{self.h4}',
-                                        h5=f'{self.h5}',
+                                        h0=f'{round(self.h0,2)}',
+                                        h1=f'{round(self.h1,2)}',
+                                        h2=f'{round(self.h2,2)}',
+                                        h3=f'{round(self.h3,2)}',
+                                        h4=f'{round(self.h4,2)}',
+                                        h5=f'{round(self.h5,2)}',
 
-                                        g0=f'{self.g0}',
-                                        g1=f'{self.g1}',
-                                        g2=f'{self.g2}',
-                                        g3=f'{self.g3}',
-                                        g4=f'{self.g4}',
-                                        g5=f'{self.g5}',
+                                        g0=f'{round(self.g0,2)}',
+                                        g1=f'{round(self.g1,2)}',
+                                        g2=f'{round(self.g2,2)}',
+                                        g3=f'{round(self.g3,2)}',
+                                        g4=f'{round(self.g4,2)}',
+                                        g5=f'{round(self.g5,2)}',
 
-                                        Cpr0=f'{self.Cpr0}',
-                                        Cpr1=f'{self.Cpr1}',
-                                        Cpr2=f'{self.Cpr2}',
-                                        Cpr3=f'{self.Cpr3}',
-                                        Cpr4=f'{self.Cpr4}',
-                                        Cpr5=f'{self.Cpr5}',
+                                        Cpr0=f'{round(self.Cpr0,2)}',
+                                        Cpr1=f'{round(self.Cpr1,2)}',
+                                        Cpr2=f'{round(self.Cpr2,2)}',
+                                        Cpr3=f'{round(self.Cpr3,2)}',
+                                        Cpr4=f'{round(self.Cpr4,2)}',
+                                        Cpr5=f'{round(self.Cpr5,2)}',
 
-                                        Tydc0=f'{self.Tydc0}',
-                                        Tydc1=f'{self.Tydc1}',
-                                        Tydc2=f'{self.Tydc2}',
-                                        Tydc3=f'{self.Tydc3}',
-                                        Tydc4=f'{self.Tydc4}',
-                                        Tydc5=f'{self.Tydc5}',
-                                        ΣTydc=f'{self.ΣTydc}',
+                                        Tydc0=f'{round(self.Tydc0,2)}',
+                                        Tydc1=f'{round(self.Tydc1,2)}',
+                                        Tydc2=f'{round(self.Tydc2,2)}',
+                                        Tydc3=f'{round(self.Tydc3,2)}',
+                                        Tydc4=f'{round(self.Tydc4,2)}',
+                                        Tydc5=f'{round(self.Tydc5,2)}',
+                                        ΣTydc=f'{round(self.ΣTydc,2)}',
                                         φφ=f'{round(self.φ,2)}',
-                                        ff=f'{self.f}',
-                                        Tydf0=f'{self.Tydf0}',
-                                        Tydf1=f'{self.Tydf1}',
-                                        Tydf2=f'{self.Tydf2}',
-                                        Tydf3=f'{self.Tydf3}',
-                                        Tydf4=f'{self.Tydf4}',
-                                        Tydf5=f'{self.Tydf5}',
-                                        ΣTydf=f'{self.ΣTydf}',
+                                        ff=f'{round(self.f,3)}',
+                                        Tydf0=f'{round(self.Tydf0,2)}',
+                                        Tydf1=f'{round(self.Tydf1,2)}',
+                                        Tydf2=f'{round(self.Tydf2,2)}',
+                                        Tydf3=f'{round(self.Tydf3,2)}',
+                                        Tydf4=f'{round(self.Tydf4,2)}',
+                                        Tydf5=f'{round(self.Tydf5,2)}',
+                                        ΣTydf=f'{round(self.ΣTydf,2)}',
 
-                                        Tcd0=f'{self.Tcd0}',
-                                        Tcd1=f'{self.Tcd1}',
-                                        Tcd2=f'{self.Tcd2}',
-                                        Tcd3=f'{self.Tcd3}',
-                                        Tcd4=f'{self.Tcd4}',
-                                        Tcd5=f'{self.Tcd5}',
-                                        ΣTcd=f'{self.ΣTcd}',
-
-
+                                        Tcd0=f'{round(self.Tcd0,2)}',
+                                        Tcd1=f'{round(self.Tcd1,2)}',
+                                        Tcd2=f'{round(self.Tcd2,2)}',
+                                        Tcd3=f'{round(self.Tcd3,2)}',
+                                        Tcd4=f'{round(self.Tcd4,2)}',
+                                        Tcd5=f'{round(self.Tcd5,2)}',
+                                        ΣTcd=f'{round(self.ΣTcd,2)}',
 
                                         ρρ=f'{p_vodi}',  # Убедитесь, что p_vodi определено
                                         hhmax2=f'{round(max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5) ** 2, 2)}',
-                                        km=f'{self.Km}'
+                                        km=f'{round(self.Km,3)}'
                                         )
 
         # Обработка документа
