@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from initial_data import WordEquationReplacer
+from autocad import AutoCADLines
 
 
 class App:
@@ -11,6 +12,7 @@ class App:
         print("Инициализация началась")
         self.root = root
         self.root.title("Ввод данных")
+
 
         # Создание виджета Canvas для прокрутки
         self.canvas = tk.Canvas(root)
@@ -154,24 +156,24 @@ class App:
         self.WL = data["Показатель текучести WL"]
         self.Kt = data["Показатель кривизны кривой, Kt"]
 
-        self.horda_2d = round(math.sqrt(((self.H - self.hбм) ** 2 + (self.n * self.H + x1) ** 2)),2)
-        self.d = round(self.horda_2d / 2, 2)
-        self.dsqrt = round(self.d * self.d,2)
+        self.horda_2d = math.sqrt(((self.H - self.hбм) ** 2 + (self.n * self.H + x1) ** 2))
+        self.d = self.horda_2d / 2
+        self.dsqrt = self.d * self.d
 
-        self.t = round(self.Kt * self.H, 2)
-        self.R = round((self.d ** 2 + self.t ** 2) / (2 * self.t), 2)
+        self.t = self.Kt * self.H
+        self.R = (self.d ** 2 + self.t ** 2) / (2 * self.t)
         self.α = math.asin((self.H - self.hбм) / self.horda_2d)
 
-        self.α_degrees = round(math.degrees(self.α), 3)
+        self.α_degrees = math.degrees(self.α)
         # print(f"Угол в радианах: {self.α_degrees}")
 
         self.μ = math.asin(self.d / self.R)
-        self.μ_degrees = round(math.degrees(self.μ), 3)
+        self.μ_degrees = math.degrees(self.μ)
 
         self.XR = round(self.n * self.H + x1 + self.R * math.sin(self.α - self.μ), 2)
         self.YR = round(self.R * math.cos(self.α - self.μ), 2)
         self.N = self.find_max_N()
-        self.b1 = round(self.n * self.H / self.N, 2)
+        self.b1 = self.n * self.H / self.N
 
         self.xn1 = b0
         self.xn2 = self.xn1 + self.b1
@@ -182,7 +184,7 @@ class App:
 
 
         self.xcp0 = b0 / 2
-        self.xcp1 = (self.xn2+ self.xn1) / 2
+        self.xcp1 = (self.xn2 + self.xn1) / 2
         self.xcp2 = (self.xn3+ self.xn2) / 2
         self.xcp3 = (self.xn4+ self.xn3) / 2
         self.xcp4 = (self.xn5+ self.xn4) / 2
@@ -196,11 +198,11 @@ class App:
         self.β5 = math.asin((self.XR - self.xcp5) / self.R)
 
         self.yп1 = self.H
-        self.yп2 = self.H - (self.xcp1 - x1) / 2
-        self.yп3 = self.H - (self.xcp2 - x1) / 2
-        self.yп4 = self.H - (self.xcp3 - x1) / 2
-        self.yп5 = self.H - (self.xcp4 - x1) / 2
-        self.yп6 = self.H - (self.xcp5 - x1) / 2
+        self.yп2 = self.H - ((self.xcp1 - x1) / 2)
+        self.yп3 = self.H - ((self.xcp2 - x1) / 2)
+        self.yп4 = self.H - ((self.xcp3 - x1) / 2)
+        self.yп5 = self.H - ((self.xcp4 - x1) / 2)
+        self.yп6 = self.H - ((self.xcp5 - x1) / 2)
 
         self.yk0 = self.YR - self.R * math.cos(self.β0)
         self.yk1 = self.YR - self.R * math.cos(self.β1)
@@ -453,6 +455,110 @@ class App:
                                         hhmax2=f'{round(max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5) ** 2, 2)}',
                                         km=f'{round(self.Km,3)}'
                                         )
+
+        autocader = AutoCADLines(100, horda=self.horda_2d,
+                                 dd=self.d,
+                                 dsqrt=self.dsqrt,
+                                 HH=self.H,
+                                 n=self.n,
+                                 hbm=self.hбм,
+                                 wl=self.WL,
+                                 kt=self.Kt,
+                                 b0=b0,  # Нужно убедиться, что это определено
+                                 tt=self.t,
+                                 tsqrt=self.t**2,
+                                 αα=self.α_degrees,  # Преобразование в градусы
+                                 RR=self.R,
+                                 μμ=self.μ_degrees,
+                                 XR=self.XR,
+                                 YR=self.YR,
+                                 NN=self.N,
+                                 b1=self.b1,
+                                 xn1=self.xn1,
+                                 xn2=self.xn2,
+                                 xn3=self.xn3,
+                                 xn4=self.xn4,
+                                 xn5=self.xn5,
+                                 xn6=self.xn6,
+                                 xcp0=self.xcp0,
+                                 xcp1=self.xcp1,
+                                 xcp2=self.xcp2,
+                                 xcp3=self.xcp3,
+                                 xcp4=self.xcp4,
+                                 xcp5=self.xcp5,
+
+                                 β0=math.degrees(self.β0),
+                                 β1=math.degrees(self.β1),
+                                 β2=math.degrees(self.β2),
+                                 β3=math.degrees(self.β3),
+                                 β4=math.degrees(self.β4),
+                                 β5=math.degrees(self.β5),
+
+                                 yп1=self.yп1,
+                                 yп2=self.yп2,
+                                 yп3=self.yп3,
+                                 yп4=self.yп4,
+                                 yп5=self.yп5,
+                                 yп6=self.yп6,
+
+                                 yk0=self.yk0,
+                                 yk1=self.yk1,
+                                 yk2=self.yk2,
+                                 yk3=self.yk3,
+                                 yk4=self.yk4,
+                                 yk5=self.yk5,
+
+                                 h0=self.h0,
+                                 h1=self.h1,
+                                 h2=self.h2,
+                                 h3=self.h3,
+                                 h4=self.h4,
+                                 h5=self.h5,
+
+                                 g0=self.g0,
+                                 g1=self.g1,
+                                 g2=self.g2,
+                                 g3=self.g3,
+                                 g4=self.g4,
+                                 g5=self.g5,
+
+                                 Cpr0=self.Cpr0,
+                                 Cpr1=self.Cpr1,
+                                 Cpr2=self.Cpr2,
+                                 Cpr3=self.Cpr3,
+                                 Cpr4=self.Cpr4,
+                                 Cpr5=self.Cpr5,
+
+                                 Tydc0=self.Tydc0,
+                                 Tydc1=self.Tydc1,
+                                 Tydc2=self.Tydc2,
+                                 Tydc3=self.Tydc3,
+                                 Tydc4=self.Tydc4,
+                                 Tydc5=self.Tydc5,
+                                 ΣTydc=self.ΣTydc,
+                                 φφ=self.φ,
+                                 ff=self.f,
+                                 Tydf0=self.Tydf0,
+                                 Tydf1=self.Tydf1,
+                                 Tydf2=self.Tydf2,
+                                 Tydf3=self.Tydf3,
+                                 Tydf4=self.Tydf4,
+                                 Tydf5=self.Tydf5,
+                                 ΣTydf=self.ΣTydf,
+
+                                 Tcd0=self.Tcd0,
+                                 Tcd1=self.Tcd1,
+                                 Tcd2=self.Tcd2,
+                                 Tcd3=self.Tcd3,
+                                 Tcd4=self.Tcd4,
+                                 Tcd5=self.Tcd5,
+                                 ΣTcd=self.ΣTcd,
+
+                                 ρρ=p_vodi,  # Убедитесь, что p_vodi определено
+                                 hhmax2=max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5) ** 2,
+                                 km=self.Km,
+                                 xnmax=max(self.xn1, self.xn2, self.xn3, self.xn4, self.xn5, self.xn6),
+                                 arrow_size=0.5)
 
         # Обработка документа
         replacer.process_document()

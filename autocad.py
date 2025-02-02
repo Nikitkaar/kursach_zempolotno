@@ -1,8 +1,11 @@
-from pyautocad import Autocad, APoint
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+from pyautocad import Autocad, APoint  # Импортируйте необходимые классы из библиотеки Autocad
 import math
 
 
-class AutoCADLines:
+class AutoCADLines():
     def __init__(self, scale_factor=100, **kwargs):
         self.acad = Autocad(create_if_not_exists=True)
         self.scale_factor = scale_factor  # Масштаб
@@ -54,6 +57,18 @@ class AutoCADLines:
         h0end = APoint(x_max - self.xcp0 / self.scale_factor, (self.H - self.h0) / self.scale_factor)
         h0start = APoint(x_max-self.xcp0 / self.scale_factor, self.H / self.scale_factor)
 
+        h1end = APoint(x_max - self.xcp1 / self.scale_factor, self.yп2 / self.scale_factor)
+        h1start = APoint(x_max - self.xcp1 / self.scale_factor, (self.yп2 - self.h1) / self.scale_factor)
+
+        h2end = APoint(x_max - self.xcp2 / self.scale_factor, self.yп3 / self.scale_factor)
+        h2start = APoint(x_max - self.xcp2 / self.scale_factor, (self.yп3 - self.h2) / self.scale_factor)
+        h3end = APoint(x_max - self.xcp3 / self.scale_factor, self.yп4 / self.scale_factor)
+        h3start = APoint(x_max - self.xcp3 / self.scale_factor, (self.yп4 - self.h3) / self.scale_factor)
+        h4end = APoint(x_max - self.xcp4 / self.scale_factor, self.yп5 / self.scale_factor)
+        h4start = APoint(x_max - self.xcp4 / self.scale_factor, (self.yп5 - self.h4) / self.scale_factor)
+        h5end = APoint(x_max - self.xcp5 / self.scale_factor, self.yп6 / self.scale_factor)
+        h5start = APoint(x_max - self.xcp5 / self.scale_factor, (self.yп6 - self.h5) / self.scale_factor)
+
         # Создание отрезков
         self.add_segment(vertical_start, vertical_end)
         self.add_segment(horizontal_start, horizontal_end)
@@ -74,6 +89,11 @@ class AutoCADLines:
         # Добавляем мешающий отрезок
         self.add_segment(hordastart, hordaend)
         self.add_segment(h0start, h0end)
+        self.add_segment(h1start, h1end)
+        self.add_segment(h2start, h2end)
+        self.add_segment(h3start, h3end)
+        self.add_segment(h4start, h4end)
+        self.add_segment(h5start, h5end)
 
         # Добавление размеров
         self._add_dimensions(Hbmstart, Hbmend, f'H = {(self.H - self.hbm) / 1000:.2f} м', offset_x=10)
@@ -142,6 +162,8 @@ class AutoCADLines:
 
 
 # Пример использования класса
+
 if __name__ == "__main__":
-    cad_lines = AutoCADLines(H=11.8, xnmax=27.2, arrow_size=0.5, b0=2.2)
+    cad_lines = AutoCADLines( H=11.8, xnmax=27.2, arrow_size=0.5, b0=2.2)  # Передаем root
     cad_lines.draw_lines()
+
