@@ -2,6 +2,7 @@ import math
 from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
+from pyautocad import Autocad, APoint  # Импортируйте необходимые классы из библиотеки Autocad
 
 from initial_data import WordEquationReplacer
 from autocad import AutoCADLines
@@ -198,11 +199,11 @@ class App:
         self.β5 = math.asin((self.XR - self.xcp5) / self.R)
 
         self.yп1 = self.H
-        self.yп2 = self.H - ((self.xcp1 - x1) / 2)
-        self.yп3 = self.H - ((self.xcp2 - x1) / 2)
-        self.yп4 = self.H - ((self.xcp3 - x1) / 2)
-        self.yп5 = self.H - ((self.xcp4 - x1) / 2)
-        self.yп6 = self.H - ((self.xcp5 - x1) / 2)
+        self.yп2 = self.H - ((self.xcp1 - x1) / self.n)
+        self.yп3 = self.H - ((self.xcp2 - x1) / self.n)
+        self.yп4 = self.H - ((self.xcp3 - x1) / self.n)
+        self.yп5 = self.H - ((self.xcp4 - x1) / self.n)
+        self.yп6 = self.H - ((self.xcp5 - x1) / self.n)
 
         self.yk0 = self.YR - self.R * math.cos(self.β0)
         self.yk1 = self.YR - self.R * math.cos(self.β1)
@@ -457,19 +458,19 @@ class App:
                                         )
 
         autocader = AutoCADLines(100, horda=self.horda_2d,
-                                 dd=self.d,
+                                 d=self.d,
                                  dsqrt=self.dsqrt,
-                                 HH=self.H,
+                                 H=self.H,
                                  n=self.n,
                                  hbm=self.hбм,
                                  wl=self.WL,
                                  kt=self.Kt,
                                  b0=b0,  # Нужно убедиться, что это определено
-                                 tt=self.t,
+                                 t=self.t,
                                  tsqrt=self.t**2,
-                                 αα=self.α_degrees,  # Преобразование в градусы
+                                 α=self.α_degrees,  # Преобразование в градусы
                                  RR=self.R,
-                                 μμ=self.μ_degrees,
+                                 μ=self.μ_degrees,
                                  XR=self.XR,
                                  YR=self.YR,
                                  NN=self.N,
@@ -559,7 +560,7 @@ class App:
                                  km=self.Km,
                                  xnmax=max(self.xn1, self.xn2, self.xn3, self.xn4, self.xn5, self.xn6),
                                  arrow_size=0.5)
-
+        autocader.draw_lines()
         # Обработка документа
         replacer.process_document()
         replacer.save_document('templateWord1.docx')
@@ -588,5 +589,6 @@ class App:
 # Запуск приложения
 if __name__ == "__main__":
     root = tk.Tk()
+
     app = App(root)
     root.mainloop()
