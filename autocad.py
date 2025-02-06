@@ -233,54 +233,47 @@ class AutoCADLines_1():
     def __init__(self, scale_factor=100, **kwargs):
         self.acad = Autocad(create_if_not_exists=True)
         self.scale_factor = scale_factor  # Масштаб
-        self.H = kwargs.get('H') * 1000  # Высота в мм (преобразуем из метров)
+        self.H = kwargs.get('H') * 10  # Высота в мм (преобразуем из метров)
 
 
         self.arrow_size = kwargs.get('arrow_size', 0.5) * 10  # Размер стрелочки в мм (преобразуем из метров)
 
-        self.n = kwargs.get('n') * 1000
-        self.hp = kwargs.get('hp') * 1000,
+        self.n = kwargs.get('n') * 10
+        self.hp = kwargs.get('hp') * 10
 
-        self.yb = kwargs.get('yb')*1000,
-        self.ynuv = kwargs.get('ynuv')*1000,
-        self.B = kwargs.get('B')*1000,
+        self.yb = kwargs.get('yb')/10
+        self.ynuv = kwargs.get('ynuv')*10
+        self.B = kwargs.get('B')*10
 
-        self.W10 = kwargs.get('W10')*1000,
+        self.W10 = kwargs.get('W10')*10
 
-        self.β = kwargs.get('β')*1000,
-        self.Vv = kwargs.get('Vv')*1000,
+        self.β = kwargs.get('β')*10
+        self.Vv = kwargs.get('Vv')*10
 
 
-        self.h10 =          kwargs.get('h10')*1000,
+        self.h10 =          kwargs.get('h10')*10
 
-        self.h20 =         kwargs.get('h20')*1000,
-        self.λ =         kwargs.get('λ')*1000,
-        self.D =         kwargs.get('D')*1000,
-        self.hn =         kwargs.get('hn')*1000,
-        self.deltaZ =       kwargs.get('deltaZ')*1000,
-        self.yyk =         kwargs.get('yyk')*1000,
-        self.Qk =         kwargs.get('Qk')*1000,
-        self.Dcp =         kwargs.get('Dcp')*1000,
-        self.t1 =         kwargs.get('t1')*1000,
-        self.qqk =         kwargs.get('qk')*1000,
-        self.dcp =         kwargs.get('dcp')*1000,
-        self.t2 =         kwargs.get('t2')*1000,
-        self.Vd =         kwargs.get('Vd')*1000,
-        self.a =         kwargs.get('a')*1000,
-        self.Ksh =         kwargs.get('Ksh')*1000,
-        self.Knag =         kwargs.get('Knag')*1000,
+        self.h20 =         kwargs.get('h20')*10
+        self.lam = kwargs.get('lam')*10
+        self.D =         kwargs.get('D')*10
+        self.hn =         kwargs.get('hn')*10
+        self.deltaZ = kwargs.get('deltaZ')*10
+        self.yyk =         kwargs.get('yyk')*10
+        self.Qk =         kwargs.get('Qk')*10
+        self.Dcp =         kwargs.get('Dcp')*10
+        self.t1 =         kwargs.get('t1')*10
+        self.qqk =         kwargs.get('qk')*10
+        self.dcp =         kwargs.get('dcp')*10
+        self.t2 =         kwargs.get('t2')*10
+        self.Vd =         kwargs.get('Vd')*10
+        self.a =         kwargs.get('a')*10
+        self.Ksh =         kwargs.get('Ksh')*10
+        self.Knag =         kwargs.get('Knag')*10
 
-        self.k3 =         kwargs.get('k3')*1000,
-        self.n = kwargs.get('n') * 1000
-        self.yk =         kwargs.get('yk')*1000,
+        self.k3 =         kwargs.get('k3')*10
+        self.n = kwargs.get('n') * 10
+        self.yk =         kwargs.get('yyk')*10
         self.segments = []  # Хранение всех отрезков для проверки
-
-
-
-
-
-
-
 
 
     def draw_arc_through_points(self, start, mid, end):
@@ -335,15 +328,49 @@ class AutoCADLines_1():
         #xnmax = self.xnmax / self.scale_factor  # Применяем масштаб
 
         # Создание координатных точек
-        start = APoint(0, 0)
-        Hend = APoint(0, self.H)
+        zemlja_start = start = APoint(0, 0)
+        ynuv_start = Hend = APoint(0, self.H)
+        ynuv_end = APoint(300, self.H)
+        zemlja_end = APoint(300, 0)
+
+        lambda0_start = APoint(-self.lam*0.25, self.H)
+        lambda0_middle = APoint(0, self.H+(0.5*self.hp))
+        lambda0_end = lambda1_start = APoint(self.lam*0.25, self.H)
+
+        lambda1_middle_ = APoint(self.lam*0.5, self.H-(0.5*self.hp))
+        lambda1_end_ = lambda2_start = APoint(self.lam*0.75, self.H)
+
+
+        lambda2_middle = APoint(self.lam, self.H+(0.5*self.hp))
+        lambda2_end = APoint(1.25*self.lam, self.H)
+
+        hp_start = APoint(0.25*self.lam, self.H-(0.5*self.hp))
+        hp_end = APoint(0.25*self.lam, self.H+(0.5*self.hp))
+
+        hor_lam_start = APoint(0, self.H+(0.5*self.hp))
+        hor_lam_end = APoint(self.lam, self.H+(0.5*self.hp))
+
+        yb_start = APoint(300, self.H)
+        horizontal0_start = yb_end = APoint(300, self.H+self.yb)
+
+        t1_start = APoint(0, -10)
+        t1_end = APoint(self.t1, -10)
+
+        t2_start = APoint(0, -30)
+        t2_end = APoint(self.t2, -30)
+
+        horizontal0_end = APoint(250, self.H+self.yb)
+
+        yyk_start = APoint(270, self.H)
+        yyk_end = APoint(270, self.H+self.yyk)
+
+
 
         # Создание линий...
 
         #tstart = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
         #tend = APoint(xnmax / 2, ((self.H - self.hbm) / 2 - self.t) / self.scale_factor)
 
-        d1 = APoint(0, 0)
         #d1_ = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
         # d2 = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
         #d2_ = APoint(xnmax, (self.H - self.hbm) / self.scale_factor)
@@ -353,9 +380,11 @@ class AutoCADLines_1():
         #tend = self.rotate_point(tend, self.α, tstart)  # Поворачиваем tend
 
         # Создание отрезков
-        self.add_segment(start, Hend)
+        self.add_segment(zemlja_start, zemlja_end)
+        self.add_segment(ynuv_start, ynuv_end)
+        self.add_segment(horizontal0_start, horizontal0_end)
 
-        #self.add_segment(tstart, tend)
+
 
         # Определение ближайшего пересечения по y координате
         #hbm_horizontal_end_x = self.find_nearest_intersection(hbmstart.y)
@@ -368,22 +397,25 @@ class AutoCADLines_1():
 
         # Добавляем мешающий отрезок
         #self.add_segment(hordastart, hordaend)
-        #self.draw_arc_through_points(hordastart, tend, Hbmend)
+        self.draw_arc_through_points(lambda0_end, lambda0_middle, lambda0_start)
+        self.draw_arc_through_points(lambda1_end_, lambda1_middle_, lambda1_start)
+        self.draw_arc_through_points(lambda2_end, lambda2_middle, lambda2_start)
 
         # Добавление размеров
-        #self._add_dimensions(Hbmstart, Hbmend, f'H - hбм = {(self.H - self.hbm) / 1000:.2f} м', offset_x=10)
-        #self._add_dimensions(hbmstart, hbmend, f'hбм = {(self.hbm) / 1000:.2f} м', offset_x=10)
-        #self._add_dimensions(horizontal_start, hordastart, f'L = {xnmax/10:.1f} м', offset_y=-5)
-        #self._add_dimensions(h0start, h0end, f'h0 = {self.h0*10:.1f} м', offset_y=-100)
-        #self._add_dimensions(h1start, h1end, f'h1 = {self.h1*10:.1f} м', offset_y=-100)
-        #self._add_dimensions(h2start, h2end, f'h2 = {self.h2*10:.1f} м', offset_y=-1700)
-        #self._add_dimensions(h3start, h3end, f'h3 = {self.h3*10:.1f} м', offset_y=-160)
-        #self._add_dimensions(h4start, h4end, f'h4 = {self.h4*10:.1f} м', offset_y=-150)
-        #self._add_dimensions(h5start, h5end, f'h5 = {self.h5*10:.1f} м', offset_y=-100)
+
+        self._add_dimensions(start, Hend, f'H  = {(self.H/10):.2f} м')
+        self._add_dimensions(hp_start, hp_end, f'hp = {(self.hp) / 10:.2f} м')
+        self._add_dimensions(hor_lam_start, hor_lam_end, f'λ = {self.lam/10:.2f} м', offset_y=+5)
+        self._add_dimensions(yb_end, yb_start, f'yб = {self.yb/10:.2f} м')
+        self._add_dimensions(t1_start, t1_end, f't1 = {self.t1/10:.2f} м', offset_y=-1)
+        self._add_dimensions(t2_start, t2_end, f't2 = {self.t2/10:.2f} м', offset_y=-1)
+        self._add_dimensions(yyk_start, yyk_end, f'Уук = {self.yyk/10:.2f} м')
+
+
 
         # Добавление текста без размерных линий
-        #self._add_text_to_segment(otkostart+5, hordastart, 25,f'1 : {self.n / 1000:.1f}')
-        #self._add_text_to_segment(d1, d1_, 21.449,f'd = {self.d:.2f} м')
+        #self._add_text_to_segment(ynuv_start, ynuv_end, 25,f'1 : {self.n / 1000:.1f}')
+        self._add_text_to_segment(ynuv_start, ynuv_end,0,f'Унув')
         #self._add_text_to_segment(d2, d2_, 21.449,f'd = {self.d:.2f} м')
 
         #self.acad.model.AddText("0", APoint(xnmax + 4, -8), 5)
@@ -392,6 +424,9 @@ class AutoCADLines_1():
 
         # Добавление стрелочек
         #self._create_arrow(vertical_end, 'vertical')
+
+        # Добавляем отрезок под наклоном 1:2
+        self.draw_segment_to_x_axis(horizontal0_end)
 
 
     def add_segment(self, start, end):
@@ -443,4 +478,16 @@ class AutoCADLines_1():
         # Добавление размерной линии для отрезков
         dim_line = self.acad.model.AddDimAligned(start, end, mid_point)
         dim_line.TextOverride = label  # Установка текста размерной линии
+
+    def draw_segment_to_x_axis(self, start_point):
+        # Получаем координаты точки horizontal0_end
+        y_start = start_point.y  # y координата (конечная высота)
+
+        # Находим конечную точку на оси X
+        end_x = start_point.x - 2 * y_start  # 2:1 наклон
+        end_point = APoint(end_x, 0)  # Конечная точка на оси X
+
+        # Добавляем отрезок
+        self.add_segment(start_point, end_point)
+
 

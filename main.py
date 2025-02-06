@@ -169,10 +169,10 @@ class App:
         self.m = 2
         self.Knag = 0.009
         self.gg = 9.81
+        self.yk = 2.6
 
         self.k3 = 1.5
         self.nn = 0.025
-        self.yk = 2.6
         self.yvodi = 1
 
         ## ВВодимс
@@ -259,7 +259,6 @@ class App:
         self.g4 = 2 * self.h4 * self.b1
         self.g5 = 2 * self.h5 * self.b1
 
-        #self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h0 = {self.h0}"))
         #self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h1 = {self.h1}"))
         #self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h2 = {self.h2}"))
         #self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h3 = {self.h3}"))
@@ -267,13 +266,13 @@ class App:
         #self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h5 = {self.h5}"))
         #self.φ = (float(input(f"Введите значение φ =")))
 
-        self.Cpr0 = 0.90
-        self.Cpr1 = 1.22
-        self.Cpr2 = 1.24
-        self.Cpr3 = 1.13
-        self.Cpr4 = 0.83
-        self.Cpr5 = 0.29
-        self.φ = 16
+        self.Cpr0 = 0.69
+        self.Cpr1 = 1.06
+        self.Cpr2 = 1.17
+        self.Cpr3 = 1.07
+        self.Cpr4 = 0.96
+        self.Cpr5 = 0.41
+        self.φ = 15
         self.f = math.tan(math.radians(self.φ - 2))
         self.Tydc0 = self.Cpr0 * b0 / math.cos(self.β0)
         self.Tydc1 = self.Cpr1 * self.b1 / math.cos(self.β1)
@@ -314,7 +313,7 @@ class App:
         self.hn = (((2 * self.Ksh * self.hp) / self.m) * (self.λ / self.hp)
                    ** (1 / 3) * ((1 + 2 * math.sin(math.radians(self.β))) / 3))
         self.ΔZ = self.Knag * self.W10 * self.W10 * self.D * math.cos(math.radians(self.β)) / (3 * self.gg * self.H)
-        self.yyk = self.ynuv + self.hn + self.ΔZ + self.a
+        self.yyk = (self.ynuv + self.hn + self.ΔZ + self.a)/100
         self.Qk = (self.k3 * self.nn * self.yk * self.hp * self.hp * self.λ) / (((self.yk / self.yvodi) - 1)
                                                                                ** (1 / 3) * (1 + self.m) ** (1 / 2))
         self.Dcp = 1.24 * ((self.Qk / self.yk) ** (1 / 3))
@@ -323,6 +322,7 @@ class App:
         self.dcp = 1.24 * ((self.qk / self.yk) ** (1 / 3))
         self.t2 = 2.5 * ((self.qk / self.yk) ** (1 / 3))
         self.Vd = 1.37 * ((self.gg * self.Dcp) ** (1 / 2))
+
 
         messagebox.showinfo("Успех", "Все данные успешно введены!")
 
@@ -405,7 +405,48 @@ class App:
               f'Tcd4={self.Tcd4}\n'
               f'Tcd5={self.Tcd5}\n'
               f'ΣTcd={self.ΣTcd}\n'
-              f'Km={self.Km}')
+              f'Km={self.Km}\n\n\n'
+              f'hp={self.hp}\n'
+              f'ynuv={self.ynuv}\n'
+              f'B={self.B}\n'
+              f'W10={self.W10}\n'
+              f'λ={self.λ}\n'
+              f'D={self.D}\n'
+              f'hn={self.hn}\n'
+              f'yyk={self.yyk}\n'
+              f'yk={self.yk}\n')
+
+
+        autocader_1 = AutoCADLines_1(100,
+                                     H=self.H_1,
+                                     hp=self.hp,
+                                     yb=self.yb,
+                                     ynuv=self.ynuv,
+                                     B=self.B,
+                                     W10=self.W10,
+                                     β=self.β,
+                                     Vv=self.Vv,
+                                     h10=self.h10,
+                                     h20=self.h20,
+                                     lam=self.λ,
+                                     D=self.D,
+                                     hn=self.hn,
+                                     deltaZ=self.ΔZ,
+                                     yyk=self.yyk,
+                                     Qk=self.Qk,
+                                     Dcp=self.Dcp,
+                                     t1=self.t1,
+                                     qk=self.qk,
+                                     dcp=self.dcp,
+                                     t2=self.t2,
+                                     Vd=self.Vd,
+                                     a=self.a,
+                                     Ksh=self.Ksh,
+                                     Knag=self.Knag,
+                                     k3=self.k3,
+                                     n=self.nn,
+                                     arrow_size=0.5)
+        autocader_1.draw_lines()
 
         # Создание экземпляра WordEquationReplacer
         replacer = WordEquationReplacer('templateWord.docx',
@@ -525,8 +566,8 @@ class App:
                                         ββ= f'{self.β}',
                                         Vv= f'{self.Vv}',
 
-                                        h100 = f'{self.h10}',
-                                        h200 = f'{self.h20}',
+                                        h100 = f'{round(self.h10,3)}',
+                                        h200 = f'{round(self.h20,3)}',
                                         λλ = f'{round(self.λ,2)}',
                                         DD = f'{round(self.D,1)}',
                                         hn = f'{round(self.hn,2)}',
@@ -545,8 +586,8 @@ class App:
 
                                         k33 = f'{self.k3}',
                                         n2 = f'{self.nn}',
-                                        yk = f'{round(self.yk,2)}',
-                                        yvody = f'{self.yvodi}'
+                                        yvody = f'{self.yvodi}',
+                                        yk = f'{self.yk}'
                                         )
 
 
@@ -656,45 +697,6 @@ class App:
         autocader.draw_lines()"""
 
 
-        autocader_1 = AutoCADLines_1(100,
-                                     H=self.H_1,
-                                     hp=self.hp,
-                                     yb=f'{self.yb}',
-                                     ynuv=f'{self.ynuv}',
-                                     B=f'{self.B}',
-
-                                     W10=f'{self.W10}',
-
-                                     β=f'{self.β}',
-                                     Vv=f'{self.Vv}',
-
-                                     h10=f'{self.h10}',
-                                     h20=f'{self.h20}',
-                                     λ=f'{round(self.λ, 2)}',
-                                     D=f'{round(self.D, 1)}',
-                                     hn=f'{round(self.hn, 2)}',
-                                     deltaZ=f'{round(self.ΔZ, 2)}',
-                                     yyk=f'{round(self.yyk, 2)}',
-                                     Qk=f'{round(self.Qk, 2)}',
-                                     Dcp=f'{round(self.Dcp, 2)}',
-                                     t1=f'{round(self.t1, 2)}',
-                                     qk=f'{round(self.qk, 3)}',
-                                     dcp=f'{round(self.dcp, 2)}',
-                                     t2=f'{round(self.t2, 2)}',
-                                     Vd=f'{round(self.Vd, 2)}',
-                                     a=f'{self.a}',
-                                     Ksh=f'{self.Ksh}',
-                                     Knag=f'{self.Knag}',
-
-                                     k3=f'{self.k3}',
-                                     n=f'{self.nn}',
-                                     yk=f'{round(self.yk, 2)}',
-
-
-                                     arrow_size=0.5)
-        autocader_1.draw_lines()
-
-
         # Обработка документа
         replacer.process_document()
         replacer.save_document('templateWord1.docx')
@@ -722,37 +724,37 @@ class App:
 
     def interpolate_hp(self):
         # Определяем граничные значения
-        self.w10_1 = 10
-        self.w10_2 = 20
+        w10_1 = 10
+        w10_2 = 20
 
         # Значения hp для граничных w10
-        self.hp_10 = 0.23 + 0.11 * self.H
-        self.hp_20 = 0.23 + 0.22 * self.H
+        hp_10 = 0.23 + 0.11 * self.H_1
+        hp_20 = 0.23 + 0.22 * self.H_1
 
         # Линейная интерполяция
-        if self.W10 < self.w10_1:
-            self.hp = self.hp_10 + (self.hp_10 - (self.hp_10 - self.hp_20) * ((self.w10_1 - self.W10) /
-                                                                              (self.w10_1 - self.w10_2)))
-        elif self.W10 > self.w10_2:
-            self.hp = self.hp_20 + (self.hp_20 - (self.hp_20 - self.hp_10) * ((self.W10 - self.w10_2) /
-                                                                              (self.w10_2 - self.w10_1)))
+        if self.W10 < w10_1:
+            hp = hp_10 + (hp_10 - (hp_10 - hp_20) * ((w10_1 - self.W10) /
+                                                     (w10_1 - w10_2)))
+        elif self.W10 > w10_2:
+            hp = hp_20 + (hp_20 - (hp_20 - hp_10) * ((self.W10 - w10_2) /
+                                                     (w10_2 - w10_1)))
         else:  # w10 между 10 и 20
-            self.hp = self.hp_10 + (self.hp_20 - self.hp_10) * ((self.W10 - self.w10_1) / (self.w10_2 - self.w10_1))
+            hp = hp_10 + (hp_20 - hp_10) * ((self.W10 - w10_1) / (w10_2 - w10_1))
 
-        return self.hp
+        return hp
 
     # Создаем словарь из таблицы
 
     # Функция для интерполяции значения λ
     def interpolate_lambda(self):
-        self.table = {
+        table = {
             0.5: {8: 5.6, 12: 5.5, 16: 5.4, 20: 5.3},
             0.75: {8: 9.1, 12: 8.8, 16: 8.5, 20: 8.3},
             1.00: {8: 12.8, 12: 12.3, 16: 11.7, 20: 11.4},
             1.25: {8: 16.6, 12: 15.8, 16: 15.1, 20: 14.4}
         }
-        hp_values = sorted(self.table.keys())
-        w10_values = sorted(self.table[hp_values[0]].keys())
+        hp_values = sorted(table.keys())
+        w10_values = sorted(table[hp_values[0]].keys())
 
         # Находим ближайшие значения hp и w10 в таблице
         hp_index = np.searchsorted(hp_values, self.hp)
@@ -774,19 +776,15 @@ class App:
         w10_lower = w10_values[w10_index - 1]
         w10_upper = w10_values[w10_index]
 
-        lambda_lower_lower = self.table[hp_lower][w10_lower]
-        lambda_lower_upper = self.table[hp_lower][w10_upper]
-        lambda_upper_lower = self.table[hp_upper][w10_lower]
-        lambda_upper_upper = self.table[hp_upper][w10_upper]
+        lambda_lower_lower = table[hp_lower][w10_lower]
+        lambda_lower_upper = table[hp_lower][w10_upper]
+        lambda_upper_lower = table[hp_upper][w10_lower]
+        lambda_upper_upper = table[hp_upper][w10_upper]
 
-        lambda_lower = (lambda_lower_lower + (lambda_lower_upper - lambda_lower_lower) *
-                        (self.W10 - w10_lower) / (w10_upper - w10_lower))
-        lambda_upper = (lambda_upper_lower + (lambda_upper_upper - lambda_upper_lower) *
-                        (self.W10 - w10_lower) / (w10_upper - w10_lower))
-
-        lambda_value = (lambda_lower + (lambda_upper - lambda_lower) *
-                        (self.hp - hp_lower) / (hp_upper - hp_lower))
-
+        lambda_lower = lambda_lower_lower + (lambda_lower_upper - lambda_lower_lower) * (self.W10 - w10_lower) / (w10_upper - w10_lower)
+        lambda_upper = lambda_upper_lower + (lambda_upper_upper - lambda_upper_lower) * (self.W10 - w10_lower) / (w10_upper - w10_lower)
+        lambda_value = lambda_lower + (lambda_upper - lambda_lower) * (self.hp - hp_lower) / (hp_upper - hp_lower)
+        print(lambda_value)
         return lambda_value
 
 # Запуск приложения
