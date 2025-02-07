@@ -214,7 +214,9 @@ class App:
         self.xn3 = self.xn2 + self.b1
         self.xn4 = self.xn3 + self.b1
         self.xn5 = self.xn4 + self.b1
-        self.xn6 = self.xn5 + self.b1
+        self.xn6 = 0
+        if self.N > 5:
+            self.xn6 = self.xn5 + self.b1
 
 
         self.xcp0 = b0 / 2
@@ -250,7 +252,7 @@ class App:
         self.h2 = self.yп3 - self.yk2
         self.h3 = self.yп4 - self.yk3
         self.h4 = self.yп5 - self.yk4
-        self.h5 = self.yп6 - self.yk5
+        self.h5 = max(self.yп6 - self.yk5,0)
 
         self.g0 = 2 * self.h0 * b0
         self.g1 = 2 * self.h1 * self.b1
@@ -259,6 +261,7 @@ class App:
         self.g4 = 2 * self.h4 * self.b1
         self.g5 = 2 * self.h5 * self.b1
 
+        #self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h0 = {self.h0}"))
         #self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h1 = {self.h1}"))
         #self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h2 = {self.h2}"))
         #self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h3 = {self.h3}"))
@@ -266,13 +269,13 @@ class App:
         #self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h5 = {self.h5}"))
         #self.φ = (float(input(f"Введите значение φ =")))
 
-        self.Cpr0 = 0.69
-        self.Cpr1 = 1.06
-        self.Cpr2 = 1.17
-        self.Cpr3 = 1.07
-        self.Cpr4 = 0.96
-        self.Cpr5 = 0.41
-        self.φ = 15
+        self.Cpr0 = 0.93
+        self.Cpr1 = 1.33
+        self.Cpr2 = 1.35
+        self.Cpr3 = 1.13
+        self.Cpr4 = 0.56
+        self.Cpr5 = 0.00
+        self.φ = 17.1
         self.f = math.tan(math.radians(self.φ - 2))
         self.Tydc0 = self.Cpr0 * b0 / math.cos(self.β0)
         self.Tydc1 = self.Cpr1 * self.b1 / math.cos(self.β1)
@@ -449,7 +452,7 @@ class App:
         autocader_1.draw_lines()
 
         # Создание экземпляра WordEquationReplacer
-        replacer = WordEquationReplacer('templateWord.docx',
+        replacer = WordEquationReplacer('TemplateWord.docx',
                                         horda=f'{round(self.horda_2d,2)}',
                                         dd=f'{round(self.d,2)}',
                                         dsqrt=f'{round(self.dsqrt,2)}',
@@ -699,7 +702,7 @@ class App:
 
         # Обработка документа
         replacer.process_document()
-        replacer.save_document('templateWord1.docx')
+        replacer.save_document('Черновая заготовка.docx')
 
     def find_max_N(self):
         """

@@ -158,12 +158,12 @@ class AutoCADLines():
         self._add_dimensions(Hbmstart, Hbmend, f'H - hбм = {(self.H - self.hbm) / 1000:.2f} м', offset_x=10)
         self._add_dimensions(hbmstart, hbmend, f'hбм = {(self.hbm) / 1000:.2f} м', offset_x=10)
         self._add_dimensions(horizontal_start, hordastart, f'L = {xnmax/10:.1f} м', offset_y=-5)
-        self._add_dimensions(h0start, h0end, f'h0 = {self.h0*10:.1f} м', offset_y=-100)
-        self._add_dimensions(h1start, h1end, f'h1 = {self.h1*10:.1f} м', offset_y=-100)
-        self._add_dimensions(h2start, h2end, f'h2 = {self.h2*10:.1f} м', offset_y=-1700)
-        self._add_dimensions(h3start, h3end, f'h3 = {self.h3*10:.1f} м', offset_y=-160)
-        self._add_dimensions(h4start, h4end, f'h4 = {self.h4*10:.1f} м', offset_y=-150)
-        self._add_dimensions(h5start, h5end, f'h5 = {self.h5*10:.1f} м', offset_y=-100)
+        self._add_dimensions(h0start, h0end, f'h0 = {self.h0/1000:.1f} м', offset_y=-100)
+        self._add_dimensions(h1start, h1end, f'h1 = {self.h1/1000:.1f} м', offset_y=-100)
+        self._add_dimensions(h2start, h2end, f'h2 = {self.h2/1000:.1f} м', offset_y=-1700)
+        self._add_dimensions(h3start, h3end, f'h3 = {self.h3/1000:.1f} м', offset_y=-160)
+        self._add_dimensions(h4start, h4end, f'h4 = {self.h4/1000:.1f} м', offset_y=-150)
+        self._add_dimensions(h5start, h5end, f'h5 = {self.h5/1000:.1f} м', offset_y=-100)
 
         # Добавление текста без размерных линий
         self._add_text_to_segment(otkostart+5, hordastart, 25,f'1 : {self.n / 1000:.1f}')
