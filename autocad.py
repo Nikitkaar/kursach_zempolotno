@@ -12,19 +12,23 @@ class AutoCADLines():
         self.arrow_size = kwargs.get('arrow_size', 0.5) * 10  # Размер стрелочки в мм (преобразуем из метров)
         self.b0 = kwargs.get('b0') * 1000
         self.n = kwargs.get('n') * 1000
+        self.XR = kwargs.get('XR') * 1000
         self.segments = []  # Хранение всех отрезков для проверки
+
         self.h0 = kwargs.get('h0') * 1000
         self.h1 = kwargs.get('h1') * 1000
         self.h2 = kwargs.get('h2') * 1000
         self.h3 = kwargs.get('h3') * 1000
         self.h4 = kwargs.get('h4') * 1000
         self.h5 = kwargs.get('h5') * 1000
+        self.h6 = kwargs.get('h6') * 1000
 
         self.xn2 = kwargs.get('xn2') * 1000
         self.xn3 = kwargs.get('xn3') * 1000
         self.xn4 = kwargs.get('xn4') * 1000
         self.xn5 = kwargs.get('xn5') * 1000
         self.xn6 = kwargs.get('xn6') * 1000
+        self.xn7 = kwargs.get('xn7') * 1000
 
         self.xcp0 = kwargs.get('xcp0') * 1000
         self.xcp1 = kwargs.get('xcp1') * 1000
@@ -32,6 +36,7 @@ class AutoCADLines():
         self.xcp3 = kwargs.get('xcp3') * 1000
         self.xcp4 = kwargs.get('xcp4') * 1000
         self.xcp5 = kwargs.get('xcp5') * 1000
+        self.xcp6 = kwargs.get('xcp6') * 1000
 
         self.yп1 = kwargs.get('yп1') * 1000
         self.yп2 = kwargs.get('yп2') * 1000
@@ -39,6 +44,7 @@ class AutoCADLines():
         self.yп4 = kwargs.get('yп4') * 1000
         self.yп5 = kwargs.get('yп5') * 1000
         self.yп6 = kwargs.get('yп6') * 1000
+        self.yп7 = kwargs.get('yп7') * 1000
 
         self.t = kwargs.get('t') * 1000
         self.α = kwargs.get('α')
@@ -118,6 +124,8 @@ class AutoCADLines():
         h4start = APoint(xnmax - self.xcp4 / self.scale_factor, (self.yп5 - self.h4) / self.scale_factor)
         h5end = APoint(xnmax - self.xcp5 / self.scale_factor, self.yп6 / self.scale_factor)
         h5start = APoint(xnmax - self.xcp5 / self.scale_factor, (self.yп6 - self.h5) / self.scale_factor)
+        h6start = APoint(xnmax - self.xcp6 / self.scale_factor, self.yп7 / self.scale_factor)
+        h6end = APoint(xnmax - self.xcp6 / self.scale_factor, (self.yп7 - self.h6) / self.scale_factor)
         # Создание линий...
 
         tstart = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
@@ -127,6 +135,33 @@ class AutoCADLines():
         d1_ = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
         d2 = APoint(xnmax / 2, (self.H - self.hbm) / 2 / self.scale_factor)
         d2_ = APoint(xnmax, (self.H - self.hbm) / self.scale_factor)
+
+        # Вычисляем угол между отрезком hordastart-otkostart и осью X
+        delta_y = otkostart.y - hordastart.y
+        delta_x = otkostart.x - hordastart.x
+        angle_radians = math.atan2(delta_y, delta_x)
+        angle_degrees = math.degrees(angle_radians)
+
+        # Определяем точки для создания размерной линии угла
+        start_point = hordastart
+        end_point = otkostart
+
+        # Точка на оси X (для создания угла между отрезком и осью X)
+        axis_x_point = APoint(otkostart.x, hordastart.y)  # Точка на оси X с той же x-координатой, что и otkostart
+
+        # Создаем размерную линию угла
+        dim_angle = self.acad.model.AddDimAngular(
+            start_point,  # Первая точка отрезка (hordastart)
+            end_point,  # Вторая точка отрезка (otkostart)
+            start_point,  # Точка на оси X (начало оси X)
+            axis_x_point  # Точка на оси X (конец оси X)
+        )
+
+        # Указываем текст размера угла
+        dim_angle.TextOverride = f"{angle_degrees:.2f}°"
+
+        # Указываем точку для отображения размера угла
+        dim_angle.TextPosition = APoint((hordastart.x + otkostart.x) / 2, (hordastart.y + otkostart.y) / 2)
 
         # Поворот tstart и tend на угол α относительно точки origin
         #tstart = self.rotate_point(tstart, self.α, origin)  # Поворачиваем tstart
@@ -164,11 +199,14 @@ class AutoCADLines():
         self._add_dimensions(h3start, h3end, f'h3 = {self.h3/1000:.1f} м', offset_y=-160)
         self._add_dimensions(h4start, h4end, f'h4 = {self.h4/1000:.1f} м', offset_y=-150)
         self._add_dimensions(h5start, h5end, f'h5 = {self.h5/1000:.1f} м', offset_y=-100)
+        self._add_dimensions(h6start, h6end, f'h6 = {self.h6/1000:.1f} м', offset_y=-100)
 
         # Добавление текста без размерных линий
         self._add_text_to_segment(otkostart+5, hordastart, 25,f'1 : {self.n / 1000:.1f}')
         self._add_text_to_segment(d1, d1_, 21.449,f'd = {self.d:.2f} м')
         self._add_text_to_segment(d2, d2_, 21.449,f'd = {self.d:.2f} м')
+        self._add_text_to_segment(tstart, tend, 111,f't = {self.t/1000:.2f} м')
+        self._add_text_to_segment(hordastart, hordastart, 0,f'XR = {self.XR/1000:.2f} м')
 
         self.acad.model.AddText("0", APoint(xnmax + 4, -8), 5)
         self.acad.model.AddText("x", APoint(-xnmax * 0.09, -8), 5)
@@ -248,8 +286,6 @@ class AutoCADLines_1():
         self.W10 = kwargs.get('W10')*10
 
         self.β = kwargs.get('β')*10
-        self.Vv = kwargs.get('Vv')*10
-
 
         self.h10 =          kwargs.get('h10')*10
 
@@ -487,6 +523,7 @@ class AutoCADLines_1():
         end_x = start_point.x - 2 * y_start  # 2:1 наклон
         end_point = APoint(end_x, 0)  # Конечная точка на оси X
 
+        self._add_text_to_segment(end_point, start_point, 26.57,f'2:1')
         # Добавляем отрезок
         self.add_segment(start_point, end_point)
 

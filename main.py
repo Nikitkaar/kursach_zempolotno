@@ -215,8 +215,11 @@ class App:
         self.xn4 = self.xn3 + self.b1
         self.xn5 = self.xn4 + self.b1
         self.xn6 = 0
-        if self.N > 5:
+        self.xn7 = 0
+        if self.N > 4:
             self.xn6 = self.xn5 + self.b1
+            if self.N > 5:
+                self.xn7 = self.xn6 + self.b1
 
 
         self.xcp0 = b0 / 2
@@ -224,83 +227,136 @@ class App:
         self.xcp2 = (self.xn3+ self.xn2) / 2
         self.xcp3 = (self.xn4+ self.xn3) / 2
         self.xcp4 = (self.xn5+ self.xn4) / 2
-        self.xcp5 = (self.xn6 + self.xn5) / 2
+        self.xcp5 = 0
+        self.xcp6 = 0
+        if self.N > 4:
+            self.xcp5 = (self.xn6 + self.xn5) / 2
+            if self.N > 5:
+                self.xcp6 = (self.xn7 + self.xn6) / 2
+
 
         self.β0 = math.asin((self.XR - self.xcp0) / self.R)
         self.β1 = math.asin((self.XR - self.xcp1) / self.R)
         self.β2 = math.asin((self.XR - self.xcp2) / self.R)
         self.β3 = math.asin((self.XR - self.xcp3) / self.R)
         self.β4 = math.asin((self.XR - self.xcp4) / self.R)
-        self.β5 = math.asin((self.XR - self.xcp5) / self.R)
+        self.β5 = 0
+        self.β6 = 0
+        if self.N > 4:
+            self.β5 = math.asin((self.XR - self.xcp5) / self.R)
+
+            if self.N > 5:
+                self.β6 = math.asin((self.XR - self.xcp6) / self.R)
 
         self.yп1 = self.H
         self.yп2 = self.H - ((self.xcp1 - x1) / self.n)
         self.yп3 = self.H - ((self.xcp2 - x1) / self.n)
         self.yп4 = self.H - ((self.xcp3 - x1) / self.n)
         self.yп5 = self.H - ((self.xcp4 - x1) / self.n)
-        self.yп6 = self.H - ((self.xcp5 - x1) / self.n)
+        self.yп6 = 0
+        self.yп7 = 0
+        if self.N > 4:
+            self.yп6 = self.H - ((self.xcp5 - x1) / self.n)
+            if self.N > 5:
+                self.yп7 = self.H - ((self.xcp6 - x1) / self.n)
 
-        self.yk0 = self.YR - self.R * math.cos(self.β0)
+        self.yk0 = self.YR - self.R * math.cos(math.radians(math.degrees(self.β0)))
         self.yk1 = self.YR - self.R * math.cos(self.β1)
         self.yk2 = self.YR - self.R * math.cos(self.β2)
         self.yk3 = self.YR - self.R * math.cos(self.β3)
         self.yk4 = self.YR - self.R * math.cos(self.β4)
-        self.yk5 = self.YR - self.R * math.cos(self.β5)
+        self.yk5 = 0
+        self.yk6 = 0
+        if self.N > 4:
+            self.yk5 = self.YR - self.R * math.cos(self.β5)
+            if self.N > 5:
+                self.yk6 = self.YR - self.R * math.cos(self.β6)
 
         self.h0 = self.yп1 - self.yk0
         self.h1 = self.yп2 - self.yk1
         self.h2 = self.yп3 - self.yk2
         self.h3 = self.yп4 - self.yk3
         self.h4 = self.yп5 - self.yk4
-        self.h5 = max(self.yп6 - self.yk5,0)
+        self.h5 = 0
+        self.h6 = 0
+        if self.N > 4:
+            self.h5 = self.yп6 - self.yk5
+            if self.N > 5:
+                self.h6 = self.yп7 - self.yk6
 
         self.g0 = 2 * self.h0 * b0
         self.g1 = 2 * self.h1 * self.b1
         self.g2 = 2 * self.h2 * self.b1
         self.g3 = 2 * self.h3 * self.b1
         self.g4 = 2 * self.h4 * self.b1
-        self.g5 = 2 * self.h5 * self.b1
+        self.g5 = 0
+        self.g6 = 0
+        if self.N > 4:
+            self.g5 = 2 * self.h5 * self.b1
+            if self.N > 5:
+                self.g6 = 2 * self.h6 * self.b1
 
-        #self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h0 = {self.h0}"))
-        #self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h1 = {self.h1}"))
-        #self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h2 = {self.h2}"))
-        #self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h3 = {self.h3}"))
-        #self.Cpr4 = float(input(f"Введите значение Спр для WL = {self.WL} и h4 = {self.h4}"))
-        #self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h5 = {self.h5}"))
-        #self.φ = (float(input(f"Введите значение φ =")))
+        self.Cpr0 = float(input(f"Введите значение Спр для WL = {self.WL} и h0 = {self.h0}"))
+        self.Cpr1 = float(input(f"Введите значение Спр для WL = {self.WL} и h1 = {self.h1}"))
+        self.Cpr2 = float(input(f"Введите значение Спр для WL = {self.WL} и h2 = {self.h2}"))
+        self.Cpr3 = float(input(f"Введите значение Спр для WL = {self.WL} и h3 = {self.h3}"))
+        self.Cpr4 = float(input(f"Введите значение Спр для WL = {self.WL} и h4 = {self.h4}"))
+        self.Cpr5 = float(input(f"Введите значение Спр для WL = {self.WL} и h5 = {self.h5}"))
+        self.Cpr6 = float(input(f"Введите значение Спр для WL = {self.WL} и h6 = {self.h6}"))
 
-        self.Cpr0 = 0.93
-        self.Cpr1 = 1.33
-        self.Cpr2 = 1.35
-        self.Cpr3 = 1.13
-        self.Cpr4 = 0.56
-        self.Cpr5 = 0.00
-        self.φ = 17.1
+        self.φ = (float(input(f"Введите значение φ =")))
+
+        #self.Cpr0 = 1.20
+        #self.Cpr1 = 1.72
+        #self.Cpr2 = 1.82
+        #self.Cpr3 = 1.73
+        #self.Cpr4 = 1.39
+        #self.Cpr5 = 1.73
+        #self.Cpr6 = 0.70
+        #self.φ = 18.2
+
         self.f = math.tan(math.radians(self.φ - 2))
+
         self.Tydc0 = self.Cpr0 * b0 / math.cos(self.β0)
         self.Tydc1 = self.Cpr1 * self.b1 / math.cos(self.β1)
         self.Tydc2 = self.Cpr2 * self.b1 / math.cos(self.β2)
         self.Tydc3 = self.Cpr3 * self.b1 / math.cos(self.β3)
         self.Tydc4 = self.Cpr4 * self.b1 / math.cos(self.β4)
-        self.Tydc5 = self.Cpr5 * self.b1 / math.cos(self.β5)
-        self.ΣTydc = self.Tydc0 + self.Tydc1 + self.Tydc2 + self.Tydc3 + self.Tydc4 + self.Tydc5
+        self.Tydc5 = 0
+        self.Tydc6 = 0
+
         self.Tydf0 = self.f * self.g0 * math.cos(self.β0)
         self.Tydf1 = self.f * self.g1 * math.cos(self.β1)
         self.Tydf2 = self.f * self.g2 * math.cos(self.β2)
         self.Tydf3 = self.f * self.g3 * math.cos(self.β3)
         self.Tydf4 = self.f * self.g4 * math.cos(self.β4)
-        self.Tydf5 = self.f * self.g5 * math.cos(self.β5)
-        self.ΣTydf = self.Tydf0 + self.Tydf1 + self.Tydf2 + self.Tydf3 + self.Tydf4 + self.Tydf5
+        self.Tydf5 = 0
+        self.Tydf6 = 0
+
         self.Tcd0 = self.g0 * math.sin(self.β0)
         self.Tcd1 = self.g1 * math.sin(self.β1)
         self.Tcd2 = self.g2 * math.sin(self.β2)
         self.Tcd3 = self.g3 * math.sin(self.β3)
         self.Tcd4 = self.g4 * math.sin(self.β4)
-        self.Tcd5 = self.g5 * math.sin(self.β5)
-        self.ΣTcd = self.Tcd0 + self.Tcd1 + self.Tcd2 + self.Tcd3 + self.Tcd4+ + self.Tcd5
+        self.Tcd5 = 0
+        self.Tcd6 = 0
+
+        if self.N > 4:
+            self.g5 = 2 * self.h5 * self.b1
+            self.Tydc5 = self.Cpr5 * self.b1 / math.cos(self.β5)
+            self.Tcd5 = self.g5 * math.sin(self.β5)
+            self.Tydf5 = self.f * self.g5 * math.cos(self.β5)
+            if self.N > 5:
+                self.g6 = 2 * self.h6 * self.b1
+                self.Tydc6 = self.Cpr6 * self.b1 / math.cos(self.β6)
+                self.Tcd6 = self.g6 * math.sin(self.β6)
+                self.Tydf6 = self.f * self.g6 * math.cos(self.β6)
+        self.ΣTydc = self.Tydc0 + self.Tydc1 + self.Tydc2 + self.Tydc3 + self.Tydc4 + self.Tydc5 + self.Tydc6
+        self.ΣTydf = self.Tydf0 + self.Tydf1 + self.Tydf2 + self.Tydf3 + self.Tydf4 + self.Tydf5 + self.Tydf6
+        self.ΣTcd = self.Tcd0 + self.Tcd1 + self.Tcd2 + self.Tcd3 + self.Tcd4+ + self.Tcd5 + self.Tcd6
 
         self.Km = (self.ΣTydc + self.ΣTydf) / (
-                    self.ΣTcd + (p_vodi * (max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5)) ** 2) / 2)
+        self.ΣTcd + (p_vodi * (max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5, self.h6)) ** 2) / 2)
 
 
         # Начинаем расчеты второй части
@@ -351,12 +407,14 @@ class App:
               f'xcp2={self.xcp2}\n'
               f'xcp3={self.xcp3}\n'
               f'xcp4={self.xcp4}\n'
+              
               f'β0={self.β0}\n'
               f'β1={self.β1}\n'
               f'β2={self.β2}\n'
               f'β3={self.β3}\n'
               f'β4={self.β4}\n'
               f'β5={self.β5}\n'
+              
               f'yп1={self.yп1}\n'
               f'yп2={self.yп2}\n'
               f'yп3={self.yп3}\n'
@@ -420,7 +478,7 @@ class App:
               f'yk={self.yk}\n')
 
 
-        autocader_1 = AutoCADLines_1(100,
+        """autocader_1 = AutoCADLines_1(100,
                                      H=self.H_1,
                                      hp=self.hp,
                                      yb=self.yb,
@@ -449,10 +507,10 @@ class App:
                                      k3=self.k3,
                                      n=self.nn,
                                      arrow_size=0.5)
-        autocader_1.draw_lines()
+        autocader_1.draw_lines()"""
 
         # Создание экземпляра WordEquationReplacer
-        replacer = WordEquationReplacer('TemplateWord.docx',
+        replacer = WordEquationReplacer('Zapiska.docx',
                                         horda=f'{round(self.horda_2d,2)}',
                                         dd=f'{round(self.d,2)}',
                                         dsqrt=f'{round(self.dsqrt,2)}',
@@ -471,18 +529,22 @@ class App:
                                         YR=f'{round(self.YR,2)}',
                                         NN=f'{self.N}',
                                         b1=f'{round(self.b1,2)}',
+                                        bOne=f'{round(self.b1, 2)}',
                                         xn1=f'{round(self.xn1,2)}',
                                         xn2=f'{round(self.xn2,2)}',
                                         xn3=f'{round(self.xn3,2)}',
                                         xn4=f'{round(self.xn4,2)}',
                                         xn5=f'{round(self.xn5,2)}',
                                         xn6=f'{round(self.xn6,2)}',
+                                        xn7=f'{round(self.xn7, 2)}',
+
                                         xcp0=f'{round(self.xcp0,2)}',
                                         xcp1=f'{round(self.xcp1,2)}',
                                         xcp2=f'{round(self.xcp2,2)}',
                                         xcp3=f'{round(self.xcp3,2)}',
                                         xcp4=f'{round(self.xcp4,2)}',
                                         xcp5=f'{round(self.xcp5,2)}',
+                                        xcp6=f'{round(self.xcp6, 2)}',
 
                                         β0=f'{round(math.degrees(self.β0),2)}',
                                         β1=f'{round(math.degrees(self.β1),2)}',
@@ -490,6 +552,7 @@ class App:
                                         β3=f'{round(math.degrees(self.β3),2)}',
                                         β4=f'{round(math.degrees(self.β4),2)}',
                                         β5=f'{round(math.degrees(self.β5),2)}',
+                                        β6=f'{round(math.degrees(self.β6), 2)}',
 
                                         yп1=f'{round(self.yп1,2)}',
                                         yп2=f'{round(self.yп2,2)}',
@@ -497,6 +560,7 @@ class App:
                                         yп4=f'{round(self.yп4,2)}',
                                         yп5=f'{round(self.yп5,2)}',
                                         yп6=f'{round(self.yп6,2)}',
+                                        yп7=f'{round(self.yп7, 2)}',
 
                                         yk0=f'{round(self.yk0,2)}',
                                         yk1=f'{round(self.yk1,2)}',
@@ -504,6 +568,7 @@ class App:
                                         yk3=f'{round(self.yk3,2)}',
                                         yk4=f'{round(self.yk4,2)}',
                                         yk5=f'{round(self.yk5,2)}',
+                                        yk6=f'{round(self.yk6, 2)}',
 
                                         h0=f'{round(self.h0,2)}',
                                         h1=f'{round(self.h1,2)}',
@@ -511,6 +576,7 @@ class App:
                                         h3=f'{round(self.h3,2)}',
                                         h4=f'{round(self.h4,2)}',
                                         h5=f'{round(self.h5,2)}',
+                                        h6=f'{round(self.h6, 2)}',
 
                                         g0=f'{round(self.g0,2)}',
                                         g1=f'{round(self.g1,2)}',
@@ -518,6 +584,7 @@ class App:
                                         g3=f'{round(self.g3,2)}',
                                         g4=f'{round(self.g4,2)}',
                                         g5=f'{round(self.g5,2)}',
+                                        g6=f'{round(self.g6, 2)}',
 
                                         Cpr0=f'{round(self.Cpr0,2)}',
                                         Cpr1=f'{round(self.Cpr1,2)}',
@@ -525,6 +592,7 @@ class App:
                                         Cpr3=f'{round(self.Cpr3,2)}',
                                         Cpr4=f'{round(self.Cpr4,2)}',
                                         Cpr5=f'{round(self.Cpr5,2)}',
+                                        Cpr6=f'{round(self.Cpr6, 2)}',
 
                                         Tydc0=f'{round(self.Tydc0,2)}',
                                         Tydc1=f'{round(self.Tydc1,2)}',
@@ -532,6 +600,7 @@ class App:
                                         Tydc3=f'{round(self.Tydc3,2)}',
                                         Tydc4=f'{round(self.Tydc4,2)}',
                                         Tydc5=f'{round(self.Tydc5,2)}',
+                                        Tydc6=f'{round(self.Tydc6, 2)}',
                                         ΣTydc=f'{round(self.ΣTydc,2)}',
                                         φφ=f'{round(self.φ,2)}',
                                         ff=f'{round(self.f,3)}',
@@ -541,6 +610,7 @@ class App:
                                         Tydf3=f'{round(self.Tydf3,2)}',
                                         Tydf4=f'{round(self.Tydf4,2)}',
                                         Tydf5=f'{round(self.Tydf5,2)}',
+                                        Tydf6=f'{round(self.Tydf6, 2)}',
                                         ΣTydf=f'{round(self.ΣTydf,2)}',
 
                                         Tcd0=f'{round(self.Tcd0,2)}',
@@ -549,14 +619,15 @@ class App:
                                         Tcd3=f'{round(self.Tcd3,2)}',
                                         Tcd4=f'{round(self.Tcd4,2)}',
                                         Tcd5=f'{round(self.Tcd5,2)}',
+                                        Tcd6=f'{round(self.Tcd6, 2)}',
                                         ΣTcd=f'{round(self.ΣTcd,2)}',
 
                                         ρρ=f'{p_vodi}',  # Убедитесь, что p_vodi определено
-                                        hhmax2=f'{round(max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5) ** 2, 2)}',
+                                        hhmax2=f'{round(max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5, self.h6) ** 2, 2)}',
                                         km=f'{round(self.Km,3)}',
 
 
-                                        gg = f'{self.gg,}',
+                                        gg = f'{self.gg}',
                                         H1 =f'{self.H_1}',
                                         hpp = f'{round(self.hp,2)}',
                                         hpp2 = f'{round(self.hp**2,2)}',
@@ -594,7 +665,7 @@ class App:
                                         )
 
 
-        """autocader = AutoCADLines(100, horda=self.horda_2d,
+        autocader = AutoCADLines(100, horda=self.horda_2d,
                                  d=self.d,
                                  dsqrt=self.dsqrt,
                                  H=self.H,
@@ -612,18 +683,22 @@ class App:
                                  YR=self.YR,
                                  NN=self.N,
                                  b1=self.b1,
+
                                  xn1=self.xn1,
                                  xn2=self.xn2,
                                  xn3=self.xn3,
                                  xn4=self.xn4,
                                  xn5=self.xn5,
                                  xn6=self.xn6,
+                                 xn7=self.xn6,
+
                                  xcp0=self.xcp0,
                                  xcp1=self.xcp1,
                                  xcp2=self.xcp2,
                                  xcp3=self.xcp3,
                                  xcp4=self.xcp4,
                                  xcp5=self.xcp5,
+                                 xcp6=self.xcp6,
 
                                  β0=math.degrees(self.β0),
                                  β1=math.degrees(self.β1),
@@ -631,6 +706,7 @@ class App:
                                  β3=math.degrees(self.β3),
                                  β4=math.degrees(self.β4),
                                  β5=math.degrees(self.β5),
+                                 β6=math.degrees(self.β6),
 
                                  yп1=self.yп1,
                                  yп2=self.yп2,
@@ -638,6 +714,7 @@ class App:
                                  yп4=self.yп4,
                                  yп5=self.yп5,
                                  yп6=self.yп6,
+                                 yп7=self.yп7,
 
                                  yk0=self.yk0,
                                  yk1=self.yk1,
@@ -645,6 +722,7 @@ class App:
                                  yk3=self.yk3,
                                  yk4=self.yk4,
                                  yk5=self.yk5,
+                                 yk6=self.yk6,
 
                                  h0=self.h0,
                                  h1=self.h1,
@@ -652,6 +730,7 @@ class App:
                                  h3=self.h3,
                                  h4=self.h4,
                                  h5=self.h5,
+                                 h6=self.h6,
 
                                  g0=self.g0,
                                  g1=self.g1,
@@ -659,50 +738,18 @@ class App:
                                  g3=self.g3,
                                  g4=self.g4,
                                  g5=self.g5,
+                                 g6=self.g6,
 
-                                 Cpr0=self.Cpr0,
-                                 Cpr1=self.Cpr1,
-                                 Cpr2=self.Cpr2,
-                                 Cpr3=self.Cpr3,
-                                 Cpr4=self.Cpr4,
-                                 Cpr5=self.Cpr5,
-
-                                 Tydc0=self.Tydc0,
-                                 Tydc1=self.Tydc1,
-                                 Tydc2=self.Tydc2,
-                                 Tydc3=self.Tydc3,
-                                 Tydc4=self.Tydc4,
-                                 Tydc5=self.Tydc5,
-                                 ΣTydc=self.ΣTydc,
-                                 φφ=self.φ,
-                                 ff=self.f,
-                                 Tydf0=self.Tydf0,
-                                 Tydf1=self.Tydf1,
-                                 Tydf2=self.Tydf2,
-                                 Tydf3=self.Tydf3,
-                                 Tydf4=self.Tydf4,
-                                 Tydf5=self.Tydf5,
-                                 ΣTydf=self.ΣTydf,
-
-                                 Tcd0=self.Tcd0,
-                                 Tcd1=self.Tcd1,
-                                 Tcd2=self.Tcd2,
-                                 Tcd3=self.Tcd3,
-                                 Tcd4=self.Tcd4,
-                                 Tcd5=self.Tcd5,
-                                 ΣTcd=self.ΣTcd,
-
-                                 ρρ=p_vodi,  # Убедитесь, что p_vodi определено
-                                 hhmax2=max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5) ** 2,
+                                 hhmax2=max(self.h0, self.h1, self.h2, self.h3, self.h4, self.h5, self.h6) ** 2,
                                  km=self.Km,
-                                 xnmax=max(self.xn1, self.xn2, self.xn3, self.xn4, self.xn5, self.xn6),
+                                 xnmax=max(self.xn1, self.xn2, self.xn3, self.xn4, self.xn5, self.xn6, self.xn7),
                                  arrow_size=0.5)
-        autocader.draw_lines()"""
+        autocader.draw_lines()
 
 
         # Обработка документа
         replacer.process_document()
-        replacer.save_document('Черновая заготовка.docx')
+        replacer.save_document('Черновая_заготовка_1.docx')
 
     def find_max_N(self):
         """

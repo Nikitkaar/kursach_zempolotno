@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/PycharmProjects/Strelochniy_perevod_and_other/.idea/Strelochniy_perevod_and_other.iml" filepath="$USER_HOME$/PycharmProjects/Strelochniy_perevod_and_other/.idea/Strelochniy_perevod_and_other.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ZempolotnoUstoichivodtOtkosov.iml" filepath="$PROJECT_DIR$/.idea/ZempolotnoUstoichivodtOtkosov.iml" />
     </modules>
   </component>
