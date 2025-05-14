@@ -478,7 +478,7 @@ class App:
               f'yk={self.yk}\n')
 
 
-        """autocader_1 = AutoCADLines_1(100,
+        autocader_1 = AutoCADLines_1(100,
                                      H=self.H_1,
                                      hp=self.hp,
                                      yb=self.yb,
@@ -507,7 +507,7 @@ class App:
                                      k3=self.k3,
                                      n=self.nn,
                                      arrow_size=0.5)
-        autocader_1.draw_lines()"""
+        autocader_1.draw_lines()
 
         # Создание экземпляра WordEquationReplacer
         replacer = WordEquationReplacer('Zapiska.docx',
@@ -665,7 +665,7 @@ class App:
                                         )
 
 
-        autocader = AutoCADLines(100, horda=self.horda_2d,
+        """autocader = AutoCADLines(100, horda=self.horda_2d,
                                  d=self.d,
                                  dsqrt=self.dsqrt,
                                  H=self.H,
@@ -744,7 +744,7 @@ class App:
                                  km=self.Km,
                                  xnmax=max(self.xn1, self.xn2, self.xn3, self.xn4, self.xn5, self.xn6, self.xn7),
                                  arrow_size=0.5)
-        autocader.draw_lines()
+        autocader.draw_lines()"""
 
 
         # Обработка документа
